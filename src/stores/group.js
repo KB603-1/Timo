@@ -54,6 +54,9 @@ export const useGroupStore = defineStore("group", () => {
 
     async function makeGroup(groupData) {
         const user = getLoggedInUser();
+        if (!user) {
+            throw new Error("로그인이 필요합니다.");
+        }
 
         const payload = {
             ...groupData,
@@ -90,6 +93,9 @@ export const useGroupStore = defineStore("group", () => {
 
     async function deleteGroup(groupId) {
         const user = getLoggedInUser();
+        if (!user) {
+            throw new Error("로그인이 필요합니다.");
+        }
 
         const group = myGroups.value.find((group) => group.id === groupId);
         if (!group) throw new Error("해당 그룹을 찾을 수 없습니다.");
@@ -114,6 +120,9 @@ export const useGroupStore = defineStore("group", () => {
 
     async function joinGroup(joinData) {
         const user = getLoggedInUser();
+        if (!user) {
+            throw new Error("로그인이 필요합니다.");
+        }
 
         let isAlreadyJoined = true;
         try {
@@ -158,6 +167,9 @@ export const useGroupStore = defineStore("group", () => {
 
     async function leaveGroup(leaveData) {
         const user = getLoggedInUser();
+        if (!user) {
+            throw new Error("로그인이 필요합니다.");
+        }
 
         const group = myGroups.value.find((group) => {
             return group.id === leaveData.groupId;
@@ -190,7 +202,7 @@ export const useGroupStore = defineStore("group", () => {
     // ====== 헬퍼 함수 ======
     function getLoggedInUser() {
         const userStore = useUserStore();
-        if (!userStore.isLoggedIn) throw new Error("로그인이 필요합니다.");
+        if (!userStore.isLoggedIn) return null;
         return userStore.user;
     }
 
