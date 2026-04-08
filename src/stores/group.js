@@ -6,11 +6,14 @@ import {useRecordStore} from "@/stores/record.js";
 
 export const useGroupStore = defineStore("group", () => {
 
-    const currentGroup = ref(null);
+    const currentGroup = ref();
     const myGroups = ref([]);
 
     watch(myGroups, (newGroups) => {
-        if (currentGroup.value == null) return;
+        if (!currentGroup.value) {
+            currentGroup.value = null;
+            return;
+        }
         const group = newGroups.find(g => g.id === currentGroup.value.id);
         currentGroup.value = group || null;
     });
