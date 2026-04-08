@@ -4,6 +4,8 @@ import ShareListPage from '@/pages/share/ShareListPage.vue';
 import MainPage from '@/page/MainPage.vue';
 import ChartPage from '@/page/ChartPage.vue';
 import AddPage from '@/page/AddPage.vue';
+import MonthlyHistory from '@/page/MonthlyHistory.vue'
+import EditRecord from '@/page/EditRecord.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,6 +14,8 @@ const router = createRouter({
     { path: '/', component: MainPage },
     { path: '/stats', component: ChartPage },
     { path: '/add', component: AddPage },
+    { path: '/monthly', component: MonthlyHistory },
+    { path: '/edit', component: EditRecord },
   ],
 });
 
