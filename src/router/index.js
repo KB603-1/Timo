@@ -1,9 +1,9 @@
 import {createRouter, createWebHistory} from "vue-router";
 import {useUserStore} from "@/stores/user.js";
 import ShareListPage from "@/pages/share/ShareListPage.vue";
-import MainPage from "@/pages/MainPage.vue";
-import ChartPage from "@/pages/ChartPage.vue";
-import AddPage from "@/pages/AddPage.vue";
+import MainPage from "@/pages/main/MainPage.vue";
+import ChartPage from "@/pages/chart/ChartPage.vue";
+import AddPage from "@/pages/add/AddPage.vue";
 import SignInPage from "@/pages/SignInPage.vue";
 import SignUpPage from "@/pages/SignUpPage.vue";
 import LoggedIn from "@/layouts/LoggedIn.vue";
