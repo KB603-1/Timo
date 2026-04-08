@@ -1,10 +1,17 @@
-import {createRouter, createWebHistory} from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 import {useUserStore} from "@/stores/user.js";
+import MainPage from '@/page/MainPage.vue';
+import ChartPage from '@/page/ChartPage.vue';
+import AddPage from '@/page/AddPage.vue';
 
 const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL),
-    routes: [],
-})
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [
+    { path: '/', component: MainPage },
+    { path: '/stats', component: ChartPage },
+    { path: '/add', component: AddPage },
+  ],
+});
 
 router.beforeEach(async (to, from, next) => {
     const userStore = useUserStore();
@@ -23,4 +30,4 @@ router.beforeEach(async (to, from, next) => {
     next();
 });
 
-export default router
+export default router;
