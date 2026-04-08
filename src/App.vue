@@ -1,10 +1,7 @@
-<script setup>
-import {Button} from "@/components/ui/button/index.js";
-</script>
+<script setup></script>
 
 <template>
-  <RouterView/>
+  <RouterView />
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
