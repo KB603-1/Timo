@@ -35,7 +35,7 @@ router.beforeEach(async (to, from, next) => {
     }
 
     if (to.meta.requiresAuth && !userStore.isLoggedIn) {
-        return next("/login"); //TODO: 로그인 페이지 구현
+        return next("/login");
     }
 
     next();
