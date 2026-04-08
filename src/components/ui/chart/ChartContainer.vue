@@ -1,6 +1,5 @@
 <script>
 import { cn } from "@/lib/utils";
-import ChartStyle from "./ChartStyle.vue";
 </script>
 
 <script setup>
