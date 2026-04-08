@@ -1,17 +1,21 @@
 <script setup>
 import { ref, watch } from 'vue';
 import { useUserStore } from '@/stores/user';
+import { useGroupStore } from '@/stores/group';
 
 const userStore = useUserStore();
+const groupStore = useGroupStore();
 
 const props = defineProps({
   modelValue: Boolean,
 });
-const emit = defineEmits(['update:modelValue', 'create-group']);
+const emit = defineEmits(['update:modelValue']);
 
 const icons = ['👥', '🏠', '👩‍❤️‍👨', '🎓', '🚀', '🌊', '🎮'];
 const selectedIcon = ref(icons[0]);
 const groupName = ref('');
+const isLoading = ref(false);
+const error = ref(null);
 
 watch(
   () => props.modelValue,
@@ -19,6 +23,7 @@ watch(
     if (!visible) {
       groupName.value = '';
       selectedIcon.value = icons[0];
+      error.value = null;
     }
   },
 );
@@ -28,35 +33,35 @@ const selectIcon = (icon) => {
   selectedIcon.value = icon;
 };
 
-const submit = () => {
+const submit = async () => {
   if (!groupName.value.trim()) return;
 
-  // TODO: 추후 로그인 기능 개발 후 주석 제거
-  //   // 로그인 상태 확인
-  //   if (!userStore.isLoggedIn || !userStore.user) {
-  //     alert('로그인이 필요합니다.');
-  //     return;
-  //   }
+  // 로그인 상태 확인
+  if (!userStore.isLoggedIn || !userStore.user) {
+    error.value = '로그인이 필요합니다.';
+    return;
+  }
 
-  emit('create-group', {
-    id: Date.now(),
-    icon: selectedIcon.value,
-    title: groupName.value.trim(),
-    members: [
-      {
-        // TODO; 추후 로그인 기능 개발 후 교체
-        // name: userStore.user.nickname,
-        // avatarUrl: '', // 추후 프로필 이미지 추가 가능
-        // userId: userStore.user.id, // 멤버 식별용
-        name: '김수현',
-        avatarUrl: '', // 추후 프로필 이미지 추가 가능
-        userId: 1, // 멤버 식별용
-      },
-    ],
-    amount: 0,
-  });
+  isLoading.value = true;
+  error.value = null;
 
-  close();
+  try {
+    // groupStore의 makeGroup 함수 호출
+    // icon 필드도 전달할 수 있도록 수정됨
+    await groupStore.makeGroup({
+      name: groupName.value.trim(),
+      icon: selectedIcon.value,
+      amount: 0,
+      password: Math.random().toString(36).slice(2, 10), // 임시 비밀번호
+    });
+
+    close();
+  } catch (e) {
+    error.value = e.message || '그룹 생성에 실패했습니다.';
+    console.error(e);
+  } finally {
+    isLoading.value = false;
+  }
 };
 </script>
 
@@ -80,6 +85,12 @@ const submit = () => {
       </div>
 
       <div class="space-y-5 overflow-y-auto pr-1 max-h-[64vh]">
+        <div
+          v-if="error"
+          class="rounded-2xl bg-red-50 p-3 text-sm text-red-600"
+        >
+          {{ error }}
+        </div>
         <div>
           <p class="text-sm font-medium text-slate-500 mb-3">그룹 아이콘</p>
           <div class="flex items-center gap-2 overflow-x-auto pb-1">
@@ -126,10 +137,11 @@ const submit = () => {
 
       <button
         type="button"
-        class="mt-5 w-full rounded-3xl bg-violet-600 px-5 py-4 text-sm font-semibold text-white shadow-lg shadow-violet-200 transition hover:bg-violet-700"
+        :disabled="isLoading"
+        class="mt-5 w-full rounded-3xl bg-violet-600 px-5 py-4 text-sm font-semibold text-white shadow-lg shadow-violet-200 transition hover:bg-violet-700 disabled:opacity-50 disabled:cursor-not-allowed"
         @click="submit"
       >
-        그룹 만들기
+        {{ isLoading ? '생성 중...' : '그룹 만들기' }}
       </button>
     </section>
   </div>
