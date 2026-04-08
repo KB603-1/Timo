@@ -6,6 +6,8 @@ import ChartPage from '@/page/ChartPage.vue';
 import AddPage from '@/page/AddPage.vue';
 import MonthlyHistory from '@/page/MonthlyHistory.vue';
 import EditRecord from '@/page/EditRecord.vue';
+import MonthlyHistory from '@/pages/MonthlyHistory.vue';
+import EditRecord from '@/pages/EditRecord.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
