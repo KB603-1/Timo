@@ -4,6 +4,8 @@ import ShareListPage from '@/pages/share/ShareListPage.vue';
 import MainPage from '@/page/MainPage.vue';
 import ChartPage from '@/page/ChartPage.vue';
 import AddPage from '@/page/AddPage.vue';
+import SignInPage from "@/pages/SignInPage.vue";
+import SignUpPage from "@/pages/SignUpPage.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,6 +14,8 @@ const router = createRouter({
     { path: '/', component: MainPage },
     { path: '/stats', component: ChartPage },
     { path: '/add', component: AddPage },
+    {path: '/login', component: SignInPage },
+    {path: '/signUp', component: SignUpPage },
   ],
 });
 
