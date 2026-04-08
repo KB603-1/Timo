@@ -4,13 +4,6 @@ import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
 
-const navItems = [
-  { name: '홈', icon: 'home', path: '/' },
-  { name: '내역', icon: 'list', path: '/history' },
-  { name: '모임', icon: 'users', path: '/group' },
-  { name: '통계', icon: 'bar-chart', path: '/stats' },
-]
-
 function isActive(path) {
   return route.path === path
 }
