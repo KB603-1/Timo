@@ -89,7 +89,7 @@ const spendingType = computed(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#f2f0fb] flex flex-col pb-24">
+  <div class="min-h-screen bg-[#f2f0fb] flex flex-col">
 
     <!-- 총 지출 카드 -->
     <div

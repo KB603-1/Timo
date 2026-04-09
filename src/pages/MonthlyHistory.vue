@@ -165,7 +165,7 @@ function deleteTransaction(id) {
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#f0f0f8] flex flex-col pb-20">
+  <div class="min-h-screen bg-[#f0f0f8] flex flex-col">
     <!-- 타이틀 -->
     <div class="px-5 pb-4 bg-[#f0f0f8]">
       <h1 class="text-3xl font-bold text-gray-900">월간 내역</h1>

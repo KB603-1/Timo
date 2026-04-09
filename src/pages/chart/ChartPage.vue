@@ -121,7 +121,7 @@ const barTooltip = componentToString(barConfig, ChartTooltipContent, {
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#f2f0fb] flex flex-col pb-24">
+  <div class="min-h-screen bg-[#f2f0fb] flex flex-col">
     <!-- 헤더 -->
     <div class="px-5 pb-2">
       <h2 class="text-2xl font-bold text-gray-800">소비 분석</h2>
