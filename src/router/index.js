@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useUserStore } from '@/stores/user.js';
-import ShareListPage from '@/pages/share/ShareListPage.vue';
+
 import MainPage from '@/pages/main/MainPage.vue';
 import ChartPage from '@/pages/chart/ChartPage.vue';
 import AddPage from '@/pages/add/AddPage.vue';
