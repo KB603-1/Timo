@@ -1,6 +1,59 @@
 <script setup>
 import { useRouter } from 'vue-router';
+import BottomNav from '@/components/BottomNav.vue';
+import Card from '@/components/ui/card/Card.vue';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselDots,
+} from '@/components/ui/carousel';
+import { useRecordStore } from '@/stores/record';
+import { storeToRefs } from 'pinia';
+import { computed, onMounted, ref } from 'vue';
+
 const router = useRouter();
+const recordStore = useRecordStore();
+const { expenses } = storeToRefs(recordStore);
+
+const totalExpenses = computed(() => {
+  let sum = 0;
+  for (const expense of expenses.value) {
+    sum += expense.amount;
+  }
+  return sum;
+});
+
+onMounted(() => {
+  recordStore.fetchRecord();
+});
+
+const activeTab = ref('개인');
+
+const transactions = [
+  {
+    emoji: '🍔',
+    bg: 'bg-orange-100',
+    title: '점심 식사',
+    sub: '오늘 12:30',
+    amount: '-12,000원',
+  },
+  {
+    emoji: '🚌',
+    bg: 'bg-blue-100',
+    title: '교통카드',
+    sub: '오늘 09:10',
+    amount: '-1,500원',
+  },
+  {
+    emoji: '☕',
+    bg: 'bg-yellow-100',
+    title: '카페라떼',
+    sub: '어제 15:00',
+    amount: '-5,500원',
+  },
+];
 </script>
 
 <template>
@@ -8,14 +61,17 @@ const router = useRouter();
     <!-- 상단 헤더 -->
     <div class="flex items-center justify-between px-5 pt-6 pb-2">
       <div>
-        <p class="text-xs text-gray-400">4월 7일 화요일</p>
+        <p class="text-xs text-gray-400">4월 9일 목요일</p>
         <h2 class="text-2xl font-bold text-gray-800 mt-0.5">안녕하세요! 👋</h2>
       </div>
-      <div
-        class="w-11 h-11 rounded-full bg-purple-500 flex items-center justify-center text-xl shadow-md"
-      >
-        😊
-      </div>
+
+      <!-- 개인/그룹 토글 (shadcn Tabs) -->
+      <Tabs v-model="activeTab" default-value="개인">
+        <TabsList class="bg-gray-200 rounded-full p-1 h-9 w-[120px]">
+          <TabsTrigger value="개인">개인</TabsTrigger>
+          <TabsTrigger value="그룹">그룹</TabsTrigger>
+        </TabsList>
+      </Tabs>
     </div>
 
     <!-- 총 지출 카드 -->
@@ -23,17 +79,16 @@ const router = useRouter();
       @click="router.push('/stats')"
       class="mx-5 mt-4 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 p-5 shadow-lg relative overflow-hidden cursor-pointer"
     >
-      <!-- 배경 장식 원 -->
       <div
         class="absolute -right-6 -top-6 w-32 h-32 rounded-full bg-purple-400/30"
       ></div>
       <div
         class="absolute right-10 bottom-2 w-16 h-16 rounded-full bg-purple-400/20"
       ></div>
-
       <p class="text-purple-200 text-sm">4월 총 지출</p>
       <h1 class="text-white text-4xl font-bold mt-1">
-        195,000<span class="text-2xl font-semibold">원</span>
+        {{ totalExpenses.toLocaleString()
+        }}<span class="text-2xl font-semibold">원</span>
       </h1>
       <div
         class="mt-3 inline-flex items-center gap-1.5 bg-purple-600/50 rounded-full px-3 py-1 text-white text-xs"
@@ -45,8 +100,8 @@ const router = useRouter();
     </div>
 
     <!-- 동기부여 카드 -->
-    <div
-      class="mx-5 mt-3 rounded-2xl bg-white px-4 py-3.5 flex items-center gap-3 shadow-sm"
+    <Card
+      class="mx-5 mt-3 rounded-2xl border-0 px-4 py-3.5 gap-0 flex-row items-center gap-3 shadow-sm"
     >
       <div
         class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-xl flex-shrink-0"
@@ -60,43 +115,177 @@ const router = useRouter();
         </p>
       </div>
       <span class="text-purple-400 text-lg">✦</span>
-    </div>
+    </Card>
 
-    <!-- 카테고리 그리드 -->
-    <div class="mx-5 mt-3 grid grid-cols-2 gap-3">
-      <div
-        @click="router.push('/stats')"
-        class="bg-white rounded-2xl p-4 shadow-sm"
-      >
-        <span class="text-2xl">🍔</span>
-        <p class="text-xs text-gray-400 mt-2">식비</p>
-        <p class="text-base font-bold text-red-400 mt-0.5">58,500원</p>
-      </div>
-      <div
-        @click="router.push('/stats')"
-        class="bg-white rounded-2xl p-4 shadow-sm"
-      >
-        <span class="text-2xl">🛍️</span>
-        <p class="text-xs text-gray-400 mt-2">쇼핑</p>
-        <p class="text-base font-bold text-purple-500 mt-0.5">53,000원</p>
-      </div>
-      <div
-        @click="router.push('/stats')"
-        class="bg-white rounded-2xl p-4 shadow-sm"
-      >
-        <span class="text-2xl">☕</span>
-        <p class="text-xs text-gray-400 mt-2">카페</p>
-        <p class="text-base font-bold text-amber-400 mt-0.5">14,000원</p>
-      </div>
-      <div
-        @click="router.push('/stats')"
-        class="bg-white rounded-2xl p-4 shadow-sm"
-      >
-        <span class="text-2xl">🚌</span>
-        <p class="text-xs text-gray-400 mt-2">교통</p>
-        <p class="text-base font-bold text-blue-400 mt-0.5">4,500원</p>
-      </div>
-    </div>
+    <!-- 캐러셀 (shadcn Carousel + embla) -->
+    <Carousel
+      class="mx-5 mt-3"
+      :opts="{ align: 'center', containScroll: false }"
+    >
+      <CarouselContent class="gap-3">
+        <!-- 슬라이드 1: 이달의 지출왕 -->
+        <CarouselItem class="basis-[88%]">
+          <div
+            class="bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl p-5 flex flex-col h-[300px]"
+          >
+            <span
+              class="inline-flex items-center gap-1.5 bg-purple-400/40 text-white text-xs font-semibold px-3 py-1 rounded-full self-start mb-4"
+            >
+              🏆 이달의 지출왕
+            </span>
+            <div class="flex flex-col flex-1 justify-between">
+              <div
+                class="flex items-center bg-purple-400/30 rounded-xl px-4 py-3.5"
+              >
+                <span class="text-2xl mr-3">👑</span>
+                <span class="flex-1 text-white font-semibold text-base"
+                  >김민준</span
+                >
+                <span
+                  class="bg-purple-700/60 text-white text-sm font-bold px-3 py-1 rounded-lg"
+                  >312,000원</span
+                >
+              </div>
+              <div
+                class="flex items-center bg-purple-400/30 rounded-xl px-4 py-3.5"
+              >
+                <span class="text-2xl mr-3">🥈</span>
+                <span class="flex-1 text-white font-semibold text-base"
+                  >나</span
+                >
+                <span
+                  class="bg-purple-700/60 text-white text-sm font-bold px-3 py-1 rounded-lg"
+                  >195,000원</span
+                >
+              </div>
+              <div
+                class="flex items-center bg-purple-400/30 rounded-xl px-4 py-3.5"
+              >
+                <span class="text-2xl mr-3">🥉</span>
+                <span class="flex-1 text-white font-semibold text-base"
+                  >이수연</span
+                >
+                <span
+                  class="bg-purple-700/60 text-white text-sm font-bold px-3 py-1 rounded-lg"
+                  >129,000원</span
+                >
+              </div>
+            </div>
+          </div>
+        </CarouselItem>
+
+        <!-- 슬라이드 2: 그룹 공동 목표 -->
+        <CarouselItem class="basis-[88%]">
+          <div
+            class="bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl p-5 flex flex-col h-[300px]"
+          >
+            <span
+              class="inline-flex items-center gap-1.5 bg-purple-400/40 text-white text-xs font-semibold px-3 py-1 rounded-full self-start mb-3"
+            >
+              🎯 그룹 공동 목표
+            </span>
+            <p class="text-purple-200 text-sm">이번 달 그룹 목표</p>
+            <p class="text-white text-3xl font-bold mt-1">
+              600,000<span class="text-xl font-semibold">원</span>
+            </p>
+            <p class="text-purple-200 text-xs mt-1">
+              현재 482,000원 사용 중 · 남은 예산 118,000원
+            </p>
+            <div class="mt-3">
+              <div class="w-full bg-purple-400/30 rounded-full h-2.5">
+                <div
+                  class="bg-teal-300 h-2.5 rounded-full"
+                  style="width: 80%"
+                ></div>
+              </div>
+              <div class="flex justify-between text-purple-200 text-xs mt-1">
+                <span>0원</span>
+                <span class="font-semibold text-white">80% 달성</span>
+                <span>600,000원</span>
+              </div>
+            </div>
+            <div class="flex gap-2 mt-3 flex-1 items-end">
+              <div
+                v-for="m in [
+                  { name: '나', pct: '40%' },
+                  { name: '김민준', pct: '33%' },
+                  { name: '이수연', pct: '27%' },
+                ]"
+                :key="m.name"
+                class="flex-1 bg-purple-400/30 rounded-xl py-2.5 flex flex-col items-center"
+              >
+                <span class="w-2 h-2 rounded-full bg-purple-300 mb-1.5"></span>
+                <span class="text-purple-200 text-xs">{{ m.name }}</span>
+                <span class="text-white text-sm font-bold mt-0.5">{{
+                  m.pct
+                }}</span>
+              </div>
+            </div>
+          </div>
+        </CarouselItem>
+
+        <!-- 슬라이드 3: 멍청 비용 -->
+        <CarouselItem class="basis-[88%]">
+          <div
+            class="bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl p-5 flex flex-col h-[300px]"
+          >
+            <span
+              class="inline-flex items-center gap-1.5 bg-purple-400/40 text-white text-xs font-semibold px-3 py-1 rounded-full self-start mb-2"
+            >
+              🐔 멍청 비용
+            </span>
+            <p class="text-purple-200 text-sm">이번 달 아까운 지출</p>
+            <p class="text-white text-3xl font-bold mt-1 mb-3">
+              47,500<span class="text-xl font-semibold">원</span>
+            </p>
+            <div class="flex flex-col flex-1 justify-between">
+              <div
+                v-for="item in [
+                  {
+                    emoji: '🛒',
+                    label: '충동구매 (옷)',
+                    tag: '후회',
+                    amount: '35,000원',
+                  },
+                  {
+                    emoji: '🧋',
+                    label: '비싼 음료',
+                    tag: '과소비',
+                    amount: '8,500원',
+                  },
+                  {
+                    emoji: '📦',
+                    label: '미사용 구독',
+                    tag: '낭비',
+                    amount: '4,000원',
+                  },
+                ]"
+                :key="item.label"
+                class="flex items-center bg-purple-400/30 rounded-xl px-3 py-2.5"
+              >
+                <span class="text-lg mr-2.5 flex-shrink-0">{{
+                  item.emoji
+                }}</span>
+                <span
+                  class="flex-1 text-white text-sm font-medium min-w-0 truncate mr-2"
+                  >{{ item.label }}</span
+                >
+                <span
+                  class="bg-purple-300/30 text-purple-100 text-xs px-2 py-0.5 rounded-full mr-2 flex-shrink-0"
+                  >{{ item.tag }}</span
+                >
+                <span class="text-white text-sm font-bold flex-shrink-0">{{
+                  item.amount
+                }}</span>
+              </div>
+            </div>
+          </div>
+        </CarouselItem>
+      </CarouselContent>
+
+      <!-- Dot indicator -->
+      <CarouselDots class="mt-3" />
+    </Carousel>
 
     <!-- 최근 내역 -->
     <div class="mx-5 mt-5">
@@ -104,162 +293,29 @@ const router = useRouter();
         <h3 class="text-base font-bold text-gray-800">최근 내역</h3>
         <a href="#" class="text-xs text-purple-500 font-medium">전체보기 ›</a>
       </div>
-
       <div class="flex flex-col gap-2">
-        <!-- 거래 항목 -->
-        <div
-          class="bg-white rounded-2xl px-4 py-3.5 flex items-center gap-3 shadow-sm"
+        <Card
+          v-for="tx in transactions"
+          :key="tx.title"
+          class="rounded-2xl px-4 py-3.5 border-0 gap-0 flex-row items-center gap-3 shadow-sm"
         >
           <div
-            class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-xl flex-shrink-0"
+            :class="[
+              'w-10 h-10 rounded-full flex items-center justify-center text-xl flex-shrink-0',
+              tx.bg,
+            ]"
           >
-            🍔
+            {{ tx.emoji }}
           </div>
           <div class="flex-1">
-            <p class="text-sm font-medium text-gray-800">점심 - 제육볶음</p>
-            <p class="text-xs text-gray-400 mt-0.5">식비 · 04/07</p>
+            <p class="text-sm font-medium text-gray-800">{{ tx.title }}</p>
+            <p class="text-xs text-gray-400 mt-0.5">{{ tx.sub }}</p>
           </div>
-          <p class="text-sm font-semibold text-gray-700">-12,000원</p>
-        </div>
-
-        <div
-          class="bg-white rounded-2xl px-4 py-3.5 flex items-center gap-3 shadow-sm"
-        >
-          <div
-            class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-xl flex-shrink-0"
-          >
-            ☕
-          </div>
-          <div class="flex-1">
-            <p class="text-sm font-medium text-gray-800">아이스 아메리카노</p>
-            <p class="text-xs text-gray-400 mt-0.5">카페 · 04/07</p>
-          </div>
-          <p class="text-sm font-semibold text-gray-700">-4,500원</p>
-        </div>
-
-        <div
-          class="bg-white rounded-2xl px-4 py-3.5 flex items-center gap-3 shadow-sm"
-        >
-          <div
-            class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-xl flex-shrink-0"
-          >
-            🚌
-          </div>
-          <div class="flex-1">
-            <p class="text-sm font-medium text-gray-800">지하철</p>
-            <p class="text-xs text-gray-400 mt-0.5">교통 · 04/06</p>
-          </div>
-          <p class="text-sm font-semibold text-gray-700">-1,500원</p>
-        </div>
-
-        <div
-          class="bg-white rounded-2xl px-4 py-3.5 flex items-center gap-3 shadow-sm"
-        >
-          <div
-            class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-xl flex-shrink-0"
-          >
-            🛍️
-          </div>
-          <div class="flex-1">
-            <p class="text-sm font-medium text-gray-800">옷 구매</p>
-            <p class="text-xs text-gray-400 mt-0.5">쇼핑 · 04/06</p>
-          </div>
-          <p class="text-sm font-semibold text-gray-700">-35,000원</p>
-        </div>
+          <p class="text-sm font-semibold text-gray-700">{{ tx.amount }}</p>
+        </Card>
       </div>
     </div>
 
-    <!-- 하단 네비게이션 -->
-    <div
-      class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 flex items-center justify-around px-4 py-3 shadow-lg"
-    >
-      <button class="flex flex-col items-center gap-1 text-purple-600">
-        <svg
-          class="w-6 h-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M3 12l2-2m0 0l7-7 7 7m-9 0v10m4-10v10m-4 0h4"
-          />
-        </svg>
-        <span class="text-[10px] font-medium">홈</span>
-      </button>
-
-      <button class="flex flex-col items-center gap-1 text-gray-400">
-        <svg
-          class="w-6 h-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M4 6h16M4 12h16M4 18h16"
-          />
-        </svg>
-        <span class="text-[10px] font-medium">내역</span>
-      </button>
-
-      <!-- 중앙 + 버튼 -->
-      <button
-        class="w-14 h-14 rounded-full bg-purple-500 flex items-center justify-center shadow-lg -mt-6"
-      >
-        <svg
-          class="w-7 h-7 text-white"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="2.5"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M12 4v16m8-8H4"
-          />
-        </svg>
-        <span class="sr-only">추가</span>
-      </button>
-
-      <button class="flex flex-col items-center gap-1 text-gray-400">
-        <svg
-          class="w-6 h-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M17 20h5v-2a4 4 0 00-5-3.87M9 20H4v-2a4 4 0 015-3.87M12 12a4 4 0 100-8 4 4 0 000 8z"
-          />
-        </svg>
-        <span class="text-[10px] font-medium">모임</span>
-      </button>
-
-      <button class="flex flex-col items-center gap-1 text-gray-400">
-        <svg
-          class="w-6 h-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6m6 0h10M13 19V9a2 2 0 012-2h2a2 2 0 012 2v10"
-          />
-        </svg>
-        <span class="text-[10px] font-medium">통계</span>
-      </button>
-    </div>
+    <BottomNav />
   </div>
 </template>
