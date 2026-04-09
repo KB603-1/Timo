@@ -1,6 +1,8 @@
 <script setup>
 
 import {Alert, AlertTitle} from "@/components/ui/alert/index.js";
+
+const props = defineProps(['message'])
 </script>
 
 <template>
@@ -8,7 +10,7 @@ import {Alert, AlertTitle} from "@/components/ui/alert/index.js";
       class="mt-4 bg-red-50 border-red-50"
   >
     <AlertTitle class="text-red-400">
-      <slot />
+      {{props.message}}
     </AlertTitle>
   </Alert>
 </template>
