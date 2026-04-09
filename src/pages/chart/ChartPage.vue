@@ -18,8 +18,14 @@ import { storeToRefs } from 'pinia';
 import { computed, onMounted } from 'vue';
 
 const DEFAULT_COLORS = [
-  '#a78bfa', '#f472b6', '#60a5fa', '#34d399',
-  '#fb923c', '#e879f9', '#fbbf24', '#f87171',
+  '#a78bfa',
+  '#f472b6',
+  '#60a5fa',
+  '#34d399',
+  '#fb923c',
+  '#e879f9',
+  '#fbbf24',
+  '#f87171',
 ];
 
 const recordStore = useRecordStore();
@@ -35,12 +41,12 @@ const currentMonth = today.getMonth() + 1;
 const currentYear = today.getFullYear();
 const currentMonthLabel = `${currentMonth}월 총 소비`;
 
-const currentMonthExpenses = computed(() =>
-  expenses.value.filter((e) => {
+const currentMonthExpenses = computed(() => {
+  return expenses.value.filter((e) => {
     const d = new Date(e.date);
     return d.getMonth() + 1 === currentMonth && d.getFullYear() === currentYear;
-  }),
-);
+  });
+});
 
 const totalMonthExpenses = computed(() =>
   currentMonthExpenses.value.reduce((sum, e) => sum + e.amount, 0),
@@ -133,11 +139,13 @@ const barTooltip = componentToString(barConfig, ChartTooltipContent, {
       ></div>
       <p class="text-purple-200 text-sm">{{ currentMonthLabel }}</p>
       <h1 class="text-white text-4xl font-bold mt-1">
-        {{ totalMonthExpenses.toLocaleString() }}<span class="text-2xl font-semibold">원</span>
+        {{ totalMonthExpenses.toLocaleString()
+        }}<span class="text-2xl font-semibold">원</span>
       </h1>
       <p class="text-purple-200 text-xs mt-2">
         <template v-if="topCategory">
-          {{ topCategory.emoji }} {{ topCategory.category }}에 가장 많이 썼어요 ({{ topCategory.percent }}%)
+          {{ topCategory.emoji }} {{ topCategory.category }}에 가장 많이 썼어요
+          ({{ topCategory.percent }}%)
         </template>
         <template v-else>이번 달 지출 내역이 없어요</template>
       </p>
@@ -146,7 +154,10 @@ const barTooltip = componentToString(barConfig, ChartTooltipContent, {
     <!-- 카테고리별 지출 -->
     <div class="mx-5 mt-4 rounded-2xl bg-white p-4 shadow-sm">
       <h3 class="text-base font-bold text-gray-800 mb-3">카테고리별 지출</h3>
-      <div v-if="categoryData.length === 0" class="text-center py-6 text-gray-400 text-sm">
+      <div
+        v-if="categoryData.length === 0"
+        class="text-center py-6 text-gray-400 text-sm"
+      >
         이번 달 지출 내역이 없어요
       </div>
       <div v-else class="flex items-center gap-4">
@@ -207,7 +218,10 @@ const barTooltip = componentToString(barConfig, ChartTooltipContent, {
     <!-- 이번 달 TOP 지출 -->
     <div class="mx-5 mt-4 rounded-2xl bg-white p-4 shadow-sm">
       <h3 class="text-base font-bold text-gray-800 mb-3">이번 달 TOP 지출</h3>
-      <div v-if="categoryData.length === 0" class="text-center py-6 text-gray-400 text-sm">
+      <div
+        v-if="categoryData.length === 0"
+        class="text-center py-6 text-gray-400 text-sm"
+      >
         이번 달 지출 내역이 없어요
       </div>
       <div v-else class="flex flex-col gap-3">
