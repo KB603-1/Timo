@@ -4,7 +4,7 @@ import GroupDrawer from "@/components/GroupDrawer.vue";
 </script>
 
 <template>
-  <header class="sticky top-0 z-50 w-full bg-[#f2f0fb]">
+  <header class="flex flex-col z-50 w-full bg-[#f2f0fb]">
     <div class="flex h-14 items-center px-4">
 
       <!-- 좌측 슬롯 (직접 채워넣으세요) -->

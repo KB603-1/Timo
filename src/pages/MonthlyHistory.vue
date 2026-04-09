@@ -179,143 +179,18 @@ async function deleteRecord(recordId) {
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#f0f0f8] flex flex-col">
-    <!-- 타이틀 -->
-    <div class="px-5 pb-4 bg-[#f0f0f8]">
-      <h1 class="text-3xl font-bold text-gray-900">월간 내역</h1>
-    </div>
+  <!-- 타이틀 -->
+  <div class="px-5 pb-4 bg-[#f0f0f8]">
+    <h1 class="text-3xl font-bold text-gray-900">월간 내역</h1>
+  </div>
 
-    <!-- 캘린더 카드 -->
-    <div class="mx-4 bg-white rounded-2xl p-4 shadow-sm mb-4">
-      <!-- 월 네비게이션 -->
-      <div class="flex items-center justify-between mb-1">
-        <button @click="prevMonth" class="p-1.5 text-gray-500">
-          <svg
-              class="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-          >
-            <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15 19l-7-7 7-7"
-            />
-          </svg>
-        </button>
-        <div class="text-center">
-          <p class="font-semibold text-gray-800">
-            {{ currentYear }}년 {{ currentMonth }}월
-          </p>
-          <p class="text-xs mt-0.5">
-            <span class="text-red-500"
-            >지출 {{ Math.abs(monthlyExpense).toLocaleString() }}원</span
-            >
-            <span class="text-blue-500 ml-2"
-            >수입 +{{ monthlyIncome.toLocaleString() }}원</span
-            >
-          </p>
-        </div>
-        <button @click="nextMonth" class="p-1.5 text-gray-500">
-          <svg
-              class="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-          >
-            <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 5l7 7-7 7"
-            />
-          </svg>
-        </button>
-      </div>
-
-      <!-- 요일 헤더 -->
-      <div class="grid grid-cols-7 mb-1">
-        <div
-            v-for="(d, i) in dayNames"
-            :key="d"
-            class="text-center text-xs py-1 font-medium"
-            :class="
-            i === 0
-              ? 'text-red-400'
-              : i === 6
-                ? 'text-blue-400'
-                : 'text-gray-400'
-          "
-        >
-          {{ d }}
-        </div>
-      </div>
-
-      <!-- 날짜 그리드 -->
-      <div class="grid grid-cols-7">
-        <div
-            v-for="(day, idx) in calendarDays"
-            :key="idx"
-            class="flex flex-col items-center py-0.5 cursor-pointer"
-            @click="selectDate(day)"
-        >
-          <template v-if="day">
-            <div
-                class="w-7 h-7 flex items-center justify-center rounded-full text-sm font-medium mb-0.5"
-                :class="[
-                isSelected(day) ? 'bg-[#7c4dff] text-white' : '',
-                !isSelected(day) && isSunday(idx) ? 'text-red-400' : '',
-                !isSelected(day) && isSaturday(idx) ? 'text-blue-400' : '',
-                !isSelected(day) && !isSunday(idx) && !isSaturday(idx)
-                  ? 'text-gray-700'
-                  : '',
-              ]"
-            >
-              {{ day }}
-            </div>
-            <span class="text-[9px] text-red-400 leading-tight h-3 block">
-              {{
-                getDayExpense(day) < 0 ? formatShort(getDayExpense(day)) : ''
-              }}
-            </span>
-            <span class="text-[9px] text-blue-400 leading-tight h-3 block">
-              {{
-                getDayIncome(day) > 0
-                    ? '+' + formatShort(getDayIncome(day))
-                    : ''
-              }}
-            </span>
-          </template>
-        </div>
-      </div>
-
-      <!-- 범례 -->
-      <div
-          class="flex items-center justify-center gap-4 mt-2 pt-2 border-t border-gray-100"
-      >
-        <div class="flex items-center gap-1">
-          <span class="w-2 h-2 rounded-full bg-red-400 inline-block"></span>
-          <span class="text-xs text-gray-500">지출</span>
-        </div>
-        <div class="flex items-center gap-1">
-          <span class="w-2 h-2 rounded-full bg-blue-400 inline-block"></span>
-          <span class="text-xs text-gray-500">수입</span>
-        </div>
-        <div class="flex items-center gap-1">
-          <span class="w-2 h-2 rounded-full bg-[#7c4dff] inline-block"></span>
-          <span class="text-xs text-gray-500">선택</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- 검색 -->
-    <div class="mx-4 mb-4">
-      <div
-          class="bg-white rounded-xl flex items-center px-4 py-3 gap-2 shadow-sm"
-      >
+  <!-- 캘린더 카드 -->
+  <div class="mx-4 bg-white rounded-2xl p-4 shadow-sm mb-4">
+    <!-- 월 네비게이션 -->
+    <div class="flex items-center justify-between mb-1">
+      <button @click="prevMonth" class="p-1.5 text-gray-500">
         <svg
-            class="w-4 h-4 text-gray-400 shrink-0"
+            class="w-5 h-5"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -324,101 +199,223 @@ async function deleteRecord(recordId) {
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"
+              d="M15 19l-7-7 7-7"
           />
         </svg>
-        <input
-            v-model="searchQuery"
-            type="text"
-            placeholder="내역 검색..."
-            class="flex-1 text-sm text-gray-700 focus:outline-none"
-        />
+      </button>
+      <div class="text-center">
+        <p class="font-semibold text-gray-800">
+          {{ currentYear }}년 {{ currentMonth }}월
+        </p>
+        <p class="text-xs mt-0.5">
+            <span class="text-red-500"
+            >지출 {{ Math.abs(monthlyExpense).toLocaleString() }}원</span
+            >
+          <span class="text-blue-500 ml-2"
+          >수입 +{{ monthlyIncome.toLocaleString() }}원</span
+          >
+        </p>
       </div>
-    </div>
-
-    <!-- 날짜 필터 표시 -->
-    <div
-        v-if="selectedDate"
-        class="mx-4 mb-2 flex items-center justify-between"
-    >
-      <span class="text-sm font-medium text-[#7c4dff]">
-        {{ formatDateLabel(selectedDate) }} 내역
-      </span>
-      <button
-          @click="selectedDate = null"
-          class="text-xs text-gray-400 hover:text-gray-600 underline"
-      >
-        전체 보기
+      <button @click="nextMonth" class="p-1.5 text-gray-500">
+        <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+        >
+          <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 5l7 7-7 7"
+          />
+        </svg>
       </button>
     </div>
 
-    <!-- 내역 목록 -->
-    <div class="mx-4 flex flex-col gap-4">
-      <div v-for="group in groupedTransactions" :key="group.date">
-        <!-- 날짜 헤더 -->
-        <div class="flex justify-between items-center mb-2 px-1">
+    <!-- 요일 헤더 -->
+    <div class="grid grid-cols-7 mb-1">
+      <div
+          v-for="(d, i) in dayNames"
+          :key="d"
+          class="text-center text-xs py-1 font-medium"
+          :class="
+            i === 0
+              ? 'text-red-400'
+              : i === 6
+                ? 'text-blue-400'
+                : 'text-gray-400'
+          "
+      >
+        {{ d }}
+      </div>
+    </div>
+
+    <!-- 날짜 그리드 -->
+    <div class="grid grid-cols-7">
+      <div
+          v-for="(day, idx) in calendarDays"
+          :key="idx"
+          class="flex flex-col items-center py-0.5 cursor-pointer"
+          @click="selectDate(day)"
+      >
+        <template v-if="day">
+          <div
+              class="w-7 h-7 flex items-center justify-center rounded-full text-sm font-medium mb-0.5"
+              :class="[
+                isSelected(day) ? 'bg-[#7c4dff] text-white' : '',
+                !isSelected(day) && isSunday(idx) ? 'text-red-400' : '',
+                !isSelected(day) && isSaturday(idx) ? 'text-blue-400' : '',
+                !isSelected(day) && !isSunday(idx) && !isSaturday(idx)
+                  ? 'text-gray-700'
+                  : '',
+              ]"
+          >
+            {{ day }}
+          </div>
+          <span class="text-[9px] text-red-400 leading-tight h-3 block">
+              {{
+              getDayExpense(day) < 0 ? formatShort(getDayExpense(day)) : ''
+            }}
+            </span>
+          <span class="text-[9px] text-blue-400 leading-tight h-3 block">
+              {{
+              getDayIncome(day) > 0
+                  ? '+' + formatShort(getDayIncome(day))
+                  : ''
+            }}
+            </span>
+        </template>
+      </div>
+    </div>
+
+    <!-- 범례 -->
+    <div
+        class="flex items-center justify-center gap-4 mt-2 pt-2 border-t border-gray-100"
+    >
+      <div class="flex items-center gap-1">
+        <span class="w-2 h-2 rounded-full bg-red-400 inline-block"></span>
+        <span class="text-xs text-gray-500">지출</span>
+      </div>
+      <div class="flex items-center gap-1">
+        <span class="w-2 h-2 rounded-full bg-blue-400 inline-block"></span>
+        <span class="text-xs text-gray-500">수입</span>
+      </div>
+      <div class="flex items-center gap-1">
+        <span class="w-2 h-2 rounded-full bg-[#7c4dff] inline-block"></span>
+        <span class="text-xs text-gray-500">선택</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 검색 -->
+  <div class="mx-4 mb-4">
+    <div
+        class="bg-white rounded-xl flex items-center px-4 py-3 gap-2 shadow-sm"
+    >
+      <svg
+          class="w-4 h-4 text-gray-400 shrink-0"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+      >
+        <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"
+        />
+      </svg>
+      <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="내역 검색..."
+          class="flex-1 text-sm text-gray-700 focus:outline-none"
+      />
+    </div>
+  </div>
+
+  <!-- 날짜 필터 표시 -->
+  <div
+      v-if="selectedDate"
+      class="mx-4 mb-2 flex items-center justify-between"
+  >
+      <span class="text-sm font-medium text-[#7c4dff]">
+        {{ formatDateLabel(selectedDate) }} 내역
+      </span>
+    <button
+        @click="selectedDate = null"
+        class="text-xs text-gray-400 hover:text-gray-600 underline"
+    >
+      전체 보기
+    </button>
+  </div>
+
+  <!-- 내역 목록 -->
+  <div class="mx-4 flex flex-col gap-4">
+    <div v-for="group in groupedTransactions" :key="group.date">
+      <!-- 날짜 헤더 -->
+      <div class="flex justify-between items-center mb-2 px-1">
           <span class="text-sm font-medium text-gray-700">{{
               group.label
             }}</span>
-          <span
-              class="text-sm font-medium"
-              :class="group.total < 0 ? 'text-red-500' : 'text-blue-500'"
-          >
+        <span
+            class="text-sm font-medium"
+            :class="group.total < 0 ? 'text-red-500' : 'text-blue-500'"
+        >
             {{ formatAmount(group.total) }}
           </span>
-        </div>
+      </div>
 
-        <!-- 항목들 -->
-        <div class="bg-white rounded-2xl overflow-hidden shadow-sm">
+      <!-- 항목들 -->
+      <div class="bg-white rounded-2xl overflow-hidden shadow-sm">
+        <div
+            v-for="(item, i) in group.items"
+            :key="item.id"
+            class="flex items-center px-4 py-3"
+            :class="i < group.items.length - 1 ? 'border-b border-gray-50' : ''"
+        >
           <div
-              v-for="(item, i) in group.items"
-              :key="item.id"
-              class="flex items-center px-4 py-3"
-              :class="i < group.items.length - 1 ? 'border-b border-gray-50' : ''"
+              class="w-10 h-10 bg-[#f3eeff] rounded-xl flex items-center justify-center text-xl mr-3 shrink-0"
           >
-            <div
-                class="w-10 h-10 bg-[#f3eeff] rounded-xl flex items-center justify-center text-xl mr-3 shrink-0"
-            >
-              {{ item.icon }}
-            </div>
-            <div class="flex-1 min-w-0">
-              <p class="text-sm font-medium text-gray-800 truncate">
-                {{ item.title }}
-              </p>
-              <p class="text-xs text-[#7c4dff] mt-0.5">{{ item.category }}</p>
-            </div>
-            <span
-                class="text-sm font-semibold mr-3"
-                :class="item.amount < 0 ? 'text-red-400' : 'text-blue-500'"
-            >
+            {{ item.icon }}
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium text-gray-800 truncate">
+              {{ item.title }}
+            </p>
+            <p class="text-xs text-[#7c4dff] mt-0.5">{{ item.category }}</p>
+          </div>
+          <span
+              class="text-sm font-semibold mr-3"
+              :class="item.amount < 0 ? 'text-red-400' : 'text-blue-500'"
+          >
               {{ formatAmount(item.amount) }}
             </span>
-            <div v-if="item.isOwner">
-              <div class="flex items-center gap-2 shrink-0">
-                <button
-                    @click="openEditModal(item.id)"
-                    class="text-gray-300 hover:text-[#7c4dff]"
-                >
-                  <Pencil class="w-4 h-4"/>
-                </button>
-                <button
-                    @click="deleteRecord(item.id)"
-                    class="text-gray-300 hover:text-red-400"
-                >
-                  <Trash2 class="w-4 h-4"/>
-                </button>
-              </div>
+          <div v-if="item.isOwner">
+            <div class="flex items-center gap-2 shrink-0">
+              <button
+                  @click="openEditModal(item.id)"
+                  class="text-gray-300 hover:text-[#7c4dff]"
+              >
+                <Pencil class="w-4 h-4"/>
+              </button>
+              <button
+                  @click="deleteRecord(item.id)"
+                  class="text-gray-300 hover:text-red-400"
+              >
+                <Trash2 class="w-4 h-4"/>
+              </button>
             </div>
           </div>
         </div>
       </div>
-
-      <p
-          v-if="groupedTransactions.length === 0"
-          class="text-center text-sm text-gray-400 py-8"
-      >
-        내역이 없습니다.
-      </p>
     </div>
+    <p
+        v-if="groupedTransactions.length === 0"
+        class="text-center text-sm text-gray-400 py-8"
+    >
+      내역이 없습니다.
+    </p>
   </div>
 </template>

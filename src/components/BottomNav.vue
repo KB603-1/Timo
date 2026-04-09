@@ -2,7 +2,7 @@
 import { useRouter, useRoute } from 'vue-router';
 import {useModalStore} from "@/stores/modal.js";
 import MakeRecordModal from "@/components/MakeRecordModal.vue";
-import { House, List, Plus, Users, ChartNoAxesColumn  } from 'lucide-vue-next';
+import { House, List, Plus, UserCog, ChartNoAxesColumn  } from 'lucide-vue-next';
 
 
 const router = useRouter();
@@ -20,9 +20,7 @@ function isActive(path) {
 </script>
 
 <template>
-  <nav
-    class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 flex items-center justify-around px-4 py-2 z-50"
-  >
+  <nav class="flex bg-white border-t border-gray-100 items-center justify-around px-4 py-2 z-50">
     <!-- 홈 -->
     <button
       @click="router.push('/')"
@@ -51,16 +49,6 @@ function isActive(path) {
       <Plus/>
     </button>
 
-    <!-- 모임 -->
-    <button
-      @click="router.push('/group')"
-      class="flex flex-col items-center gap-1 py-1 px-3"
-      :class="isActive('/group') ? 'text-violet-600' : 'text-gray-400'"
-    >
-      <Users/>
-      <span class="text-xs font-medium">모임</span>
-    </button>
-
     <!-- 통계 -->
     <button
       @click="router.push('/stats')"
@@ -69,6 +57,15 @@ function isActive(path) {
     >
       <ChartNoAxesColumn/>
       <span class="text-xs font-medium">통계</span>
+    </button>
+
+    <button
+        @click="router.push('/mypage')"
+        class="flex flex-col items-center gap-1 py-1 px-3"
+        :class="isActive('/mypage') ? 'text-violet-600' : 'text-gray-400'"
+    >
+      <UserCog/>
+      <span class="text-xs font-medium">내 정보</span>
     </button>
   </nav>
 </template>

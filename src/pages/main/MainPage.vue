@@ -1,6 +1,5 @@
 <script setup>
 import {useRouter} from 'vue-router';
-import BottomNav from '@/components/BottomNav.vue';
 import Card from '@/components/ui/card/Card.vue';
 import RecentTransactions from '@/components/main/RecentTransactions.vue';
 import {
@@ -76,12 +75,10 @@ const getMonthSum = (month, year) =>
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#f2f0fb] flex flex-col">
-
     <!-- 총 지출 카드 -->
     <div
         @click="router.push('/stats')"
-        class="mx-5 mt-4 rounded-2xl bg-linear-to-br from-purple-500 to-purple-700 p-5 shadow-lg relative overflow-hidden cursor-pointer"
+        class="mx-5 rounded-2xl bg-linear-to-br from-purple-500 to-purple-700 p-5 shadow-lg relative overflow-hidden cursor-pointer"
     >
       <div
           class="absolute -right-6 -top-6 w-32 h-32 rounded-full bg-purple-400/30"
@@ -342,7 +339,4 @@ const getMonthSum = (month, year) =>
 
     <!-- 최근 내역 -->
     <RecentTransactions/>
-
-    <BottomNav/>
-  </div>
 </template>

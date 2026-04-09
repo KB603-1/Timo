@@ -13,9 +13,9 @@ import {
   ChartTooltipContent,
   componentToString,
 } from '@/components/ui/chart';
-import { useRecordStore } from '@/stores/record';
-import { storeToRefs } from 'pinia';
-import { computed, onMounted } from 'vue';
+import {useRecordStore} from '@/stores/record';
+import {storeToRefs} from 'pinia';
+import {computed, onMounted} from 'vue';
 
 const DEFAULT_COLORS = [
   '#a78bfa',
@@ -29,7 +29,7 @@ const DEFAULT_COLORS = [
 ];
 
 const recordStore = useRecordStore();
-const { expenses, expenseCategories } = storeToRefs(recordStore);
+const {expenses, expenseCategories} = storeToRefs(recordStore);
 
 onMounted(() => {
   recordStore.fetchRecord();
@@ -49,7 +49,7 @@ const currentMonthExpenses = computed(() => {
 });
 
 const totalMonthExpenses = computed(() =>
-  currentMonthExpenses.value.reduce((sum, e) => sum + e.amount, 0),
+    currentMonthExpenses.value.reduce((sum, e) => sum + e.amount, 0),
 );
 
 // 카테고리별 지출 데이터
@@ -61,29 +61,29 @@ const categoryData = computed(() => {
   }
   const total = totalMonthExpenses.value;
   return Object.entries(totals)
-    .sort((a, b) => b[1] - a[1])
-    .map(([name, amount], i) => {
-      const cat = expenseCategories.value.find((c) => c.name === name);
-      return {
-        category: name,
-        emoji: cat?.icon ?? '💸',
-        amount,
-        percent: total > 0 ? Math.round((amount / total) * 100) : 0,
-        color: DEFAULT_COLORS[i % DEFAULT_COLORS.length],
-      };
-    });
+      .sort((a, b) => b[1] - a[1])
+      .map(([name, amount], i) => {
+        const cat = expenseCategories.value.find((c) => c.name === name);
+        return {
+          category: name,
+          emoji: cat?.icon ?? '💸',
+          amount,
+          percent: total > 0 ? Math.round((amount / total) * 100) : 0,
+          color: DEFAULT_COLORS[i % DEFAULT_COLORS.length],
+        };
+      });
 });
 
 const topCategory = computed(() => categoryData.value[0] ?? null);
 
 // shadcn ChartContainer config
 const donutConfig = {
-  percent: { label: '비율' },
-  amount: { label: '금액' },
+  percent: {label: '비율'},
+  amount: {label: '금액'},
 };
 
 const barConfig = {
-  amount: { label: '지출', color: '#a78bfa' },
+  amount: {label: '지출', color: '#a78bfa'},
 };
 
 // 도넛 차트
@@ -101,12 +101,12 @@ const monthlyData = computed(() => {
     const m = d.getMonth() + 1;
     const y = d.getFullYear();
     const amount = expenses.value
-      .filter((e) => {
-        const ed = new Date(e.date);
-        return ed.getMonth() + 1 === m && ed.getFullYear() === y;
-      })
-      .reduce((sum, e) => sum + e.amount, 0);
-    result.push({ month: `${m}월`, amount });
+        .filter((e) => {
+          const ed = new Date(e.date);
+          return ed.getMonth() + 1 === m && ed.getFullYear() === y;
+        })
+        .reduce((sum, e) => sum + e.amount, 0);
+    result.push({month: `${m}월`, amount});
   }
   return result;
 });
@@ -121,138 +121,137 @@ const barTooltip = componentToString(barConfig, ChartTooltipContent, {
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#f2f0fb] flex flex-col">
-    <!-- 헤더 -->
-    <div class="px-5 pb-2">
-      <h2 class="text-2xl font-bold text-gray-800">소비 분석</h2>
-    </div>
+  <!-- 헤더 -->
+  <div class="px-5 pb-2">
+    <h2 class="text-2xl font-bold text-gray-800">소비 분석</h2>
+  </div>
 
-    <!-- 총 소비 카드 -->
-    <div
+  <!-- 총 소비 카드 -->
+  <div
       class="mx-5 mt-3 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 p-5 shadow-lg relative overflow-hidden"
-    >
-      <div
+  >
+    <div
         class="absolute -right-6 -top-6 w-32 h-32 rounded-full bg-purple-400/30"
-      ></div>
-      <div
+    ></div>
+    <div
         class="absolute right-10 bottom-2 w-16 h-16 rounded-full bg-purple-400/20"
-      ></div>
-      <p class="text-purple-200 text-sm">{{ currentMonthLabel }}</p>
-      <h1 class="text-white text-4xl font-bold mt-1">
-        {{ totalMonthExpenses.toLocaleString()
-        }}<span class="text-2xl font-semibold">원</span>
-      </h1>
-      <p class="text-purple-200 text-xs mt-2">
-        <template v-if="topCategory">
-          {{ topCategory.emoji }} {{ topCategory.category }}에 가장 많이 썼어요
-          ({{ topCategory.percent }}%)
-        </template>
-        <template v-else>이번 달 지출 내역이 없어요</template>
-      </p>
-    </div>
+    ></div>
+    <p class="text-purple-200 text-sm">{{ currentMonthLabel }}</p>
+    <h1 class="text-white text-4xl font-bold mt-1">
+      {{
+        totalMonthExpenses.toLocaleString()
+      }}<span class="text-2xl font-semibold">원</span>
+    </h1>
+    <p class="text-purple-200 text-xs mt-2">
+      <template v-if="topCategory">
+        {{ topCategory.emoji }} {{ topCategory.category }}에 가장 많이 썼어요
+        ({{ topCategory.percent }}%)
+      </template>
+      <template v-else>이번 달 지출 내역이 없어요</template>
+    </p>
+  </div>
 
-    <!-- 카테고리별 지출 -->
-    <div class="mx-5 mt-4 rounded-2xl bg-white p-4 shadow-sm">
-      <h3 class="text-base font-bold text-gray-800 mb-3">카테고리별 지출</h3>
-      <div
+  <!-- 카테고리별 지출 -->
+  <div class="mx-5 mt-4 rounded-2xl bg-white p-4 shadow-sm">
+    <h3 class="text-base font-bold text-gray-800 mb-3">카테고리별 지출</h3>
+    <div
         v-if="categoryData.length === 0"
         class="text-center py-6 text-gray-400 text-sm"
-      >
-        이번 달 지출 내역이 없어요
-      </div>
-      <div v-else class="flex items-center gap-4">
-        <!-- 도넛 차트 -->
-        <ChartContainer :config="donutConfig" class="w-36 h-36 flex-shrink-0">
-          <VisSingleContainer :data="categoryData" :height="144">
-            <VisDonut :value="donutValue" :color="donutColor" :arc-width="32" />
-            <ChartTooltip :template="donutTooltip" />
-          </VisSingleContainer>
-        </ChartContainer>
-        <!-- 범례 -->
-        <div class="flex flex-col gap-2 flex-1">
-          <div
+    >
+      이번 달 지출 내역이 없어요
+    </div>
+    <div v-else class="flex items-center gap-4">
+      <!-- 도넛 차트 -->
+      <ChartContainer :config="donutConfig" class="w-36 h-36 flex-shrink-0">
+        <VisSingleContainer :data="categoryData" :height="144">
+          <VisDonut :value="donutValue" :color="donutColor" :arc-width="32"/>
+          <ChartTooltip :template="donutTooltip"/>
+        </VisSingleContainer>
+      </ChartContainer>
+      <!-- 범례 -->
+      <div class="flex flex-col gap-2 flex-1">
+        <div
             v-for="item in categoryData"
             :key="item.category"
             class="flex items-center justify-between"
-          >
-            <div class="flex items-center gap-1.5">
+        >
+          <div class="flex items-center gap-1.5">
               <span
-                class="w-2.5 h-2.5 rounded-full flex-shrink-0"
-                :style="{ backgroundColor: item.color }"
+                  class="w-2.5 h-2.5 rounded-full flex-shrink-0"
+                  :style="{ backgroundColor: item.color }"
               ></span>
-              <span class="text-xs text-gray-600"
-                >{{ item.emoji }} {{ item.category }}</span
-              >
-            </div>
-            <span class="text-xs font-semibold" :style="{ color: item.color }"
-              >{{ item.percent }}%</span
+            <span class="text-xs text-gray-600"
+            >{{ item.emoji }} {{ item.category }}</span
             >
           </div>
+          <span class="text-xs font-semibold" :style="{ color: item.color }"
+          >{{ item.percent }}%</span
+          >
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- 월별 소비 추이 -->
-    <div class="mx-5 mt-4 rounded-2xl bg-white p-4 shadow-sm">
-      <h3 class="text-base font-bold text-gray-800 mb-3">월별 소비 추이</h3>
-      <ChartContainer :config="barConfig" class="h-36">
-        <VisXYContainer :data="monthlyData" :height="144">
-          <VisGroupedBar
+  <!-- 월별 소비 추이 -->
+  <div class="mx-5 mt-4 rounded-2xl bg-white p-4 shadow-sm">
+    <h3 class="text-base font-bold text-gray-800 mb-3">월별 소비 추이</h3>
+    <ChartContainer :config="barConfig" class="h-36">
+      <VisXYContainer :data="monthlyData" :height="144">
+        <VisGroupedBar
             :x="barX"
             :y="barY"
             :color="barColor"
             :bar-padding="0.4"
             :rounded-corners="4"
-          />
-          <VisAxis
+        />
+        <VisAxis
             type="x"
             :tick-format="xTickFormat"
             :grid-line="false"
             :domain-line="false"
-          />
-          <ChartCrosshair :template="barTooltip" />
-        </VisXYContainer>
-      </ChartContainer>
-    </div>
+        />
+        <ChartCrosshair :template="barTooltip"/>
+      </VisXYContainer>
+    </ChartContainer>
+  </div>
 
-    <!-- 이번 달 TOP 지출 -->
-    <div class="mx-5 mt-4 rounded-2xl bg-white p-4 shadow-sm">
-      <h3 class="text-base font-bold text-gray-800 mb-3">이번 달 TOP 지출</h3>
-      <div
+  <!-- 이번 달 TOP 지출 -->
+  <div class="mx-5 mt-4 rounded-2xl bg-white p-4 shadow-sm">
+    <h3 class="text-base font-bold text-gray-800 mb-3">이번 달 TOP 지출</h3>
+    <div
         v-if="categoryData.length === 0"
         class="text-center py-6 text-gray-400 text-sm"
-      >
-        이번 달 지출 내역이 없어요
-      </div>
-      <div v-else class="flex flex-col gap-3">
-        <div
+    >
+      이번 달 지출 내역이 없어요
+    </div>
+    <div v-else class="flex flex-col gap-3">
+      <div
           v-for="(item, index) in categoryData.slice(0, 4)"
           :key="item.category"
-        >
-          <div class="flex items-center gap-3">
-            <span class="text-xs text-gray-400 w-3">{{ index + 1 }}</span>
-            <span class="text-lg w-6 text-center">{{ item.emoji }}</span>
-            <span class="text-sm text-gray-700 flex-1">{{
+      >
+        <div class="flex items-center gap-3">
+          <span class="text-xs text-gray-400 w-3">{{ index + 1 }}</span>
+          <span class="text-lg w-6 text-center">{{ item.emoji }}</span>
+          <span class="text-sm text-gray-700 flex-1">{{
               item.category
             }}</span>
-            <span class="text-sm font-semibold text-gray-700"
-              >{{ item.amount.toLocaleString() }}원</span
-            >
-            <span
+          <span class="text-sm font-semibold text-gray-700"
+          >{{ item.amount.toLocaleString() }}원</span
+          >
+          <span
               class="text-xs font-bold w-8 text-right"
               :style="{ color: item.color }"
-              >{{ item.percent }}%</span
-            >
-          </div>
-          <div class="ml-10 mt-1 h-1 bg-gray-100 rounded-full overflow-hidden">
-            <div
+          >{{ item.percent }}%</span
+          >
+        </div>
+        <div class="ml-10 mt-1 h-1 bg-gray-100 rounded-full overflow-hidden">
+          <div
               class="h-full rounded-full transition-all"
               :style="{
                 width: item.percent + '%',
                 backgroundColor: item.color,
               }"
-            ></div>
-          </div>
+          ></div>
         </div>
       </div>
     </div>

@@ -5,14 +5,14 @@ import TopBar from "@/components/TopBar.vue";
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-100 flex justify-center">
-    <div class="relative w-full max-w-[390px] min-h-screen bg-[#f4f3ff] flex flex-col">
-      <TopBar/>
-      <main class="flex-1 overflow-y-auto pb-20">
+  <div class="h-full flex flex-col">
+    <TopBar/>
+    <main class="flex-1 bg-[#f2f0fb] min-h-0 overflow-y-auto">
+      <div class="py-2">
         <RouterView/>
-      </main>
-      <BottomNav/>
-    </div>
+      </div>
+    </main>
+    <BottomNav/>
   </div>
 </template>
 
