@@ -27,7 +27,7 @@ const selectedLabel = computed(() =>
 <template>
   <div
       @click="isModalOpen = true"
-      class="flex items-center gap-1.5 text-purple-700 font-semibold text-sm px-4 py-2 rounded-full"
+      class="flex items-center gap-1.5 text-purple-700 font-semibold text-sm"
   >
     {{ selectedLabel }}
     <span class="text-xs">▾</span>
