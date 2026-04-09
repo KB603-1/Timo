@@ -186,8 +186,17 @@ const copyInviteLink = () => {
 };
 
 // 멤버 강퇴
-const removeMember = async (nickname) => {
-  alert(`[개발 중] ${nickname}님을 내보내는 기능은 아직 준비 중입니다.`);
+const removeMember = async (member) => {
+  if (!currentGroup.value) return;
+  if (!confirm(`${member.nickname}님을 그룹에서 내보내시겠습니까?`)) return;
+
+  try {
+    // API 통신 시에는 member 객체의 id를 사용합니다.
+    await groupStore.removeMember(currentGroup.value.id, member.id);
+    alert(`${member.nickname}님을 성공적으로 내보냈습니다.`);
+  } catch (e) {
+    alert(e.message);
+  }
 };
 
 // currentGroup의 상태 변화를 감지하여 의도적으로 그룹이 해제될 때만 메인으로 이동 (새로고침 시 튕김 방지)

@@ -238,6 +238,53 @@ export const useGroupStore = defineStore('group', () => {
     await fetchGroup();
   }
 
+  // 멤버 강퇴 (방장이 멤버 내보내기)
+  async function removeMember(groupId, memberId) {
+    const user = getLoggedInUser();
+    if (!user) {
+      throw new Error('로그인이 필요합니다.');
+    }
+
+    // 그룹 체크
+    const group = myGroups.value.find((group) => group.id === groupId);
+    if (!group) throw new Error('해당 그룹을 찾을 수 없습니다.');
+    // 방장이 아닐 때 에러처리
+    if (!group.isOwner) {
+      throw new Error('방장만 멤버를 내보낼 수 있습니다.');
+    }
+    // 자기 자신일 때 에러처리(일단 해놓음)
+    if (group.ownerId === memberId) {
+      throw new Error('방장 자신을 내보낼 수 없습니다.');
+    }
+
+    try {
+      // groupMembers 테이블에서 찾기
+      const res = await api.get(
+        `/groupMembers?groupId=${groupId}&userId=${memberId}`,
+      );
+      const member = res.data[0];
+
+      // 멤버 null 처리
+      if (!member) {
+        throw new Error('해당 멤버가 그룹에 존재하지 않습니다.');
+      }
+
+      // groupMembers 테이블에서 삭제 처리
+      await api.delete(`/groupMembers/${member.id}`);
+
+      // 현재 그룹의 멤버 목록에서 제거, 즉각 반영 시키기
+      if (currentGroup.value && currentGroup.value.id === groupId) {
+        currentGroup.value.members = currentGroup.value.members.filter(
+          (m) => m.id !== memberId,
+        );
+      }
+    } catch (e) {
+      throw new Error(
+        e.message || '오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
+      );
+    }
+  }
+
   // ====== 헬퍼 함수 ======
   function getLoggedInUser() {
     if (!isLoggedIn.value) return null;
@@ -254,5 +301,6 @@ export const useGroupStore = defineStore('group', () => {
     generateInviteLink,
     joinGroup,
     leaveGroup,
+    removeMember,
   };
 });
