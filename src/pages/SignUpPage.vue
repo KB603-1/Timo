@@ -88,8 +88,8 @@ async function signUp() {
           <AlertError
               v-if="errorMessage"
               class="mt-4"
+              :message="errorMessage"
           >
-            {{ errorMessage }}
           </AlertError>
         </CardContent>
 
