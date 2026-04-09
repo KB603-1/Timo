@@ -20,7 +20,7 @@ const recordStore = useRecordStore();
 const { expenses } = storeToRefs(recordStore);
 
 const groupStore = useGroupStore();
-const { myGroups, currentGroup } = storeToRefs(groupStore);
+const { currentGroup } = storeToRefs(groupStore);
 
 const today = new Date();
 const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
@@ -86,132 +86,15 @@ const spendingType = computed(() => {
   );
 });
 
-// 모드 선택 모달
-const isModalOpen = ref(false);
-const searchQuery = ref('');
-
-const filteredGroups = computed(() =>
-  myGroups.value.filter((g) => g.name.includes(searchQuery.value)),
-);
-
-const selectedLabel = computed(() =>
-  currentGroup.value ? currentGroup.value.name : '개인',
-);
-
-function selectMode(groupId) {
-  groupStore.changeCurrentGroup(groupId);
-  isModalOpen.value = false;
-  searchQuery.value = '';
-}
 </script>
 
 <template>
   <div class="min-h-screen bg-[#f2f0fb] flex flex-col pb-24">
-    <!-- 상단 헤더 -->
-    <div class="flex items-center justify-between px-5 pt-6 pb-2">
-      <div>
-        <p class="text-xs text-gray-400">{{ todayLabel }}</p>
-        <h2 class="text-2xl font-bold text-gray-800 mt-0.5">안녕하세요! 👋</h2>
-        <p class="text-base text-gray-500">{{ user?.nickname }}님</p>
-      </div>
-
-      <!-- 모드 선택 버튼 -->
-      <button
-        @click="isModalOpen = true"
-        class="flex items-center gap-1.5 bg-purple-100 text-purple-700 font-semibold text-sm px-4 py-2 rounded-full"
-      >
-        {{ selectedLabel }}
-        <span class="text-xs">▾</span>
-      </button>
-    </div>
-
-    <!-- 바텀시트 모달 -->
-    <Teleport to="body">
-      <div v-if="isModalOpen" class="fixed inset-0 z-50 flex items-end">
-        <!-- 딤 배경 -->
-        <div
-          class="absolute inset-0 bg-black/40"
-          @click="isModalOpen = false"
-        ></div>
-
-        <!-- 시트 -->
-        <div
-          class="relative w-full bg-white rounded-t-3xl px-5 pt-4 pb-10 max-h-[70vh] flex flex-col"
-        >
-          <!-- 핸들 -->
-          <div class="w-10 h-1 bg-gray-300 rounded-full mx-auto mb-4"></div>
-          <p class="text-center font-bold text-gray-800 text-base mb-4">
-            모드 설정
-          </p>
-
-          <!-- 검색 -->
-          <div
-            class="flex items-center bg-gray-100 rounded-xl px-3 py-2 mb-4 gap-2"
-          >
-            <span class="text-gray-400 text-sm">🔍</span>
-            <input
-              v-model="searchQuery"
-              placeholder="그룹명으로 검색..."
-              class="bg-transparent text-sm flex-1 outline-none text-gray-700"
-            />
-          </div>
-
-          <div class="overflow-y-auto flex-1">
-            <!-- 개인 -->
-            <p class="text-xs text-gray-400 font-semibold mb-1">개인</p>
-            <button
-              @click="selectMode(null)"
-              class="w-full flex items-center gap-3 px-3 py-3 rounded-xl mb-3"
-              :class="!currentGroup ? 'bg-purple-50' : ''"
-            >
-              <div
-                class="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-lg"
-              >
-                👤
-              </div>
-              <div class="flex-1 text-left">
-                <p class="text-sm font-semibold text-gray-800">개인</p>
-                <p class="text-xs text-gray-400">나의 개인 가계부</p>
-              </div>
-              <span v-if="!currentGroup" class="text-purple-500 font-bold"
-                >✓</span
-              >
-            </button>
-
-            <!-- 그룹 -->
-            <p class="text-xs text-gray-400 font-semibold mb-1">그룹</p>
-            <button
-              v-for="group in filteredGroups"
-              :key="group.id"
-              @click="selectMode(group.id)"
-              class="w-full flex items-center gap-3 px-3 py-3 rounded-xl"
-              :class="currentGroup?.id === group.id ? 'bg-purple-50' : ''"
-            >
-              <div
-                class="w-9 h-9 rounded-full bg-purple-100 flex items-center justify-center text-lg"
-              >
-                🏠
-              </div>
-              <div class="flex-1 text-left">
-                <p class="text-sm font-semibold text-gray-800">
-                  {{ group.name }}
-                </p>
-              </div>
-              <span
-                v-if="currentGroup?.id === group.id"
-                class="text-purple-500 font-bold"
-                >✓</span
-              >
-            </button>
-          </div>
-        </div>
-      </div>
-    </Teleport>
 
     <!-- 총 지출 카드 -->
     <div
       @click="router.push('/stats')"
-      class="mx-5 mt-4 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 p-5 shadow-lg relative overflow-hidden cursor-pointer"
+      class="mx-5 mt-4 rounded-2xl bg-linear-to-br from-purple-500 to-purple-700 p-5 shadow-lg relative overflow-hidden cursor-pointer"
     >
       <div
         class="absolute -right-6 -top-6 w-32 h-32 rounded-full bg-purple-400/30"
@@ -308,7 +191,7 @@ function selectMode(groupId) {
         <!-- 슬라이드 1: 이달의 지출왕 -->
         <CarouselItem class="basis-[88%]">
           <div
-            class="bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl p-5 flex flex-col h-[300px]"
+            class="bg-linear-to-br from-purple-500 to-purple-700 rounded-2xl p-5 flex flex-col h-[300px]"
           >
             <span
               class="inline-flex items-center gap-1.5 bg-purple-400/40 text-white text-xs font-semibold px-3 py-1 rounded-full self-start mb-4"
@@ -359,7 +242,7 @@ function selectMode(groupId) {
         <!-- 슬라이드 2: 그룹 공동 목표 -->
         <CarouselItem class="basis-[88%]">
           <div
-            class="bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl p-5 flex flex-col h-[300px]"
+            class="bg-linear-to-br from-purple-500 to-purple-700 rounded-2xl p-5 flex flex-col h-[300px]"
           >
             <span
               class="inline-flex items-center gap-1.5 bg-purple-400/40 text-white text-xs font-semibold px-3 py-1 rounded-full self-start mb-3"
@@ -409,7 +292,7 @@ function selectMode(groupId) {
         <!-- 슬라이드 3: 멍청 비용 -->
         <CarouselItem class="basis-[88%]">
           <div
-            class="bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl p-5 flex flex-col h-[300px]"
+            class="bg-linear-to-br from-purple-500 to-purple-700 rounded-2xl p-5 flex flex-col h-[300px]"
           >
             <span
               class="inline-flex items-center gap-1.5 bg-purple-400/40 text-white text-xs font-semibold px-3 py-1 rounded-full self-start mb-2"
@@ -445,7 +328,7 @@ function selectMode(groupId) {
                 :key="item.label"
                 class="flex items-center bg-purple-400/30 rounded-xl px-3 py-2.5"
               >
-                <span class="text-lg mr-2.5 flex-shrink-0">{{
+                <span class="text-lg mr-2.5 shrink-0">{{
                   item.emoji
                 }}</span>
                 <span
@@ -453,10 +336,10 @@ function selectMode(groupId) {
                   >{{ item.label }}</span
                 >
                 <span
-                  class="bg-purple-300/30 text-purple-100 text-xs px-2 py-0.5 rounded-full mr-2 flex-shrink-0"
+                  class="bg-purple-300/30 text-purple-100 text-xs px-2 py-0.5 rounded-full mr-2 shrink-0"
                   >{{ item.tag }}</span
                 >
-                <span class="text-white text-sm font-bold flex-shrink-0">{{
+                <span class="text-white text-sm font-bold shrink-0">{{
                   item.amount
                 }}</span>
               </div>
