@@ -1,8 +1,16 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router';
+import {useModalStore} from "@/stores/modal.js";
+import MakeRecordModal from "@/components/MakeRecordModal.vue";
 
 const router = useRouter();
 const route = useRoute();
+
+const modalStore = useModalStore();
+
+function openMakeRecordModal() {
+  modalStore.openModal(MakeRecordModal);
+}
 
 function isActive(path) {
   return route.path === path;
@@ -63,7 +71,7 @@ function isActive(path) {
 
     <!-- 추가 버튼 (가운데) -->
     <button
-      @click="router.push('/add')"
+      @click="openMakeRecordModal"
       class="flex flex-col items-center justify-center w-14 h-14 -mt-6 rounded-full bg-violet-600 text-white shadow-lg shadow-violet-300"
     >
       <svg

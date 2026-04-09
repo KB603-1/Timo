@@ -3,7 +3,6 @@ import { useUserStore } from '@/stores/user.js';
 
 import MainPage from '@/pages/main/MainPage.vue';
 import ChartPage from '@/pages/chart/ChartPage.vue';
-import AddPage from '@/pages/add/AddPage.vue';
 import SignInPage from '@/pages/SignInPage.vue';
 import SignUpPage from '@/pages/SignUpPage.vue';
 import LoggedIn from '@/layouts/LoggedIn.vue';
@@ -19,7 +18,6 @@ const router = createRouter({
       children: [
         { path: '', component: MainPage },
         { path: '/stats', component: ChartPage },
-        { path: '/add', component: AddPage },
         { path: '/monthly', component: MonthlyHistory },
         { path: '/edit', component: EditRecord },
       ],
