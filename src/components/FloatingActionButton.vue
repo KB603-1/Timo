@@ -4,10 +4,13 @@ import { useRouter } from 'vue-router';
 import { useGroupStore } from '@/stores/group';
 import { storeToRefs } from 'pinia';
 import ShareCreateSheet from '@/components/share/ShareCreateSheet.vue';
+import { useModalStore } from '@/stores/modal.js';
+import MakeRecordModal from '@/components/MakeRecordModal.vue';
 
 const router = useRouter();
 const groupStore = useGroupStore();
 const { currentGroup } = storeToRefs(groupStore);
+const modalStore = useModalStore();
 
 const isFabOpen = ref(false);
 const isCreateSheetOpen = ref(false);
@@ -17,7 +20,7 @@ const toggleFab = () => {
 };
 
 const goToAddRecord = () => {
-  router.push('/add');
+  modalStore.openModal(MakeRecordModal);
   isFabOpen.value = false;
 };
 
