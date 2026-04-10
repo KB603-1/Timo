@@ -13,9 +13,9 @@ import DateTimePicker from "@/components/DateTimePicker.vue";
 import {format} from "date-fns";
 
 const emit = defineEmits(["close"]);
+const props = defineProps(['recordId']);
 
 const dateTime = ref(new Date());
-
 const recordStore = useRecordStore();
 const selectedType = ref("income");
 const selectedCategory = ref(null);
@@ -35,13 +35,38 @@ const categories = computed(() => {
   }
 });
 
-watch(selectedType, (newValue) => {
+function fillForm(recordId) {
+  const record = recordStore.records.find((r) => r.id === recordId);
+  if (!record) close();
+  title.value = record.title;
+  amount.value = record.amount;
+  memo.value = record.memo;
+  selectedType.value = record.type;       // record.title → record.type
+  selectedCategory.value = record.category;
+  dateTime.value = new Date(record.date);
+}
+
+function resetForm() {
+  dateTime.value = new Date();
+  selectedType.value = "income";
+  selectedCategory.value = null;
+  title.value = "";
+  amount.value = "";
+  memo.value = "";
+
+}
+
+watch(selectedType, () => {
   selectedCategory.value = null;
 });
 
-async function makeRecord() {
+watch(() => props.recordId, fillForm, { immediate: true }); // props 직접 watch → getter 함수
+
+
+
+async function editRecord() {
   try {
-    await recordStore.makeRecord({
+    await recordStore.editRecord(props.recordId ,{
       type: selectedType.value,
       categoryId: selectedCategory.value.id,
       title: title.value,
@@ -54,13 +79,18 @@ async function makeRecord() {
     console.error(error);
   }
 }
+
+function close() {
+  resetForm();
+  emit("close");
+}
 </script>
 
 <template>
   <DialogHeader class="mb-6">
-    <DialogTitle class="text-xl font-semibold">수입 / 지출 추가</DialogTitle>
+    <DialogTitle class="text-xl font-semibold">수입 / 지출 수정</DialogTitle>
     <DialogDescription class="text-sm text-muted-foreground">
-      새로운 내역을 입력해주세요
+      수정할 내역을 입력해주세요
     </DialogDescription>
   </DialogHeader>
 
@@ -144,11 +174,11 @@ async function makeRecord() {
         취소
       </Button>
       <Button
-          @click.prevent="makeRecord"
+          @click.prevent="editRecord"
           class="flex-1"
           :class="selectedType === 'income' ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-rose-600 hover:bg-rose-700'"
       >
-        추가하기
+        수정하기
       </Button>
     </div>
   </div>

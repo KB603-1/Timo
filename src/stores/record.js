@@ -56,7 +56,7 @@ export const useRecordStore = defineStore("record", () => {
                 throw new Error("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
             }
             if (res.data.length === 0) {
-                throw new Error("해당 그룹에 참여하고 있지 않습니다.");
+                throw new Error("해당 모임에 참여하고 있지 않습니다.");
             }
         }
 
@@ -133,7 +133,7 @@ export const useRecordStore = defineStore("record", () => {
 
         if (!group) {
             try {
-                const res = await api.get(`/records?userId=${user.id}&groupId=${null}&_embed=category`);
+                const res = await api.get(`/records?userId=${user.id}&groupId=${null}&_embed=category&_embed=user`);
                 records.value = res.data;
             } catch (e) {
                 throw new Error("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
@@ -142,7 +142,7 @@ export const useRecordStore = defineStore("record", () => {
         }
 
         try {
-            const res = await api.get(`/records?groupId=${group.id}&_embed=category`);
+            const res = await api.get(`/records?groupId=${group.id}&_embed=category&_embed=user`);
             records.value = res.data;
         } catch (e) {
             throw new Error("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");

@@ -9,14 +9,6 @@ const { expenses } = storeToRefs(recordStore);
 
 const today = new Date();
 
-const CATEGORY_STYLE = {
-  식비: { emoji: '🍔', bg: 'bg-orange-100' },
-  교통비: { emoji: '🚌', bg: 'bg-blue-100' },
-  문화생활: { emoji: '🎭', bg: 'bg-purple-100' },
-  급여: { emoji: '💰', bg: 'bg-green-100' },
-  부업: { emoji: '💼', bg: 'bg-yellow-100' },
-};
-
 function formatDate(dateStr) {
   const d = new Date(dateStr);
   const yesterday = new Date(today);
@@ -31,14 +23,10 @@ const recentTransactions = computed(() => {
     .sort((a, b) => new Date(b.date) - new Date(a.date))
     .slice(0, 3)
     .map((e) => {
-      const style = CATEGORY_STYLE[e.category?.name] ?? {
-        emoji: '💸',
-        bg: 'bg-gray-100',
-      };
       const sign = e.type === 'expense' ? '-' : '+';
       return {
-        emoji: style.emoji,
-        bg: style.bg,
+        id: e.id,
+        emoji: e.category.icon,
         title: e.title,
         sub: formatDate(e.date),
         amount: `${sign}${e.amount.toLocaleString()}원`,
@@ -52,13 +40,13 @@ const recentTransactions = computed(() => {
   <div class="mx-5 mt-5">
     <div class="flex items-center justify-between mb-3">
       <h3 class="text-base font-bold text-gray-800">최근 내역</h3>
-      <a href="#" class="text-xs text-purple-500 font-medium">전체보기 ›</a>
+      <RouterLink to="/monthly" class="text-xs text-purple-500 font-medium">전체보기 ›</RouterLink>
     </div>
     <div class="flex flex-col gap-2">
       <Card
         v-for="tx in recentTransactions"
-        :key="tx.title"
-        class="rounded-2xl px-4 py-3.5 border-0 gap-0 flex-row items-center gap-3 shadow-sm"
+        :key="tx.id"
+        class="rounded-2xl px-4 py-3.5 border-0 flex-row items-center gap-3 shadow-sm"
       >
         <div
           :class="[
