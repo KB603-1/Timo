@@ -44,6 +44,7 @@ watch([date, time], () => {
               :selected="date"
               caption-layout="dropdown"
               :default-month="date"
+              locale="ko"
               @update:model-value="(v) => { date = v; open = false }"
           />
         </PopoverContent>
