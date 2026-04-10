@@ -223,9 +223,27 @@ function loadMore() {
 // ── 상단 이동 버튼 ──
 const showScrollTop = ref(false);
 let scrollEl = null;
+let hideTimer = null;
+
+function showAndScheduleHide() {
+  showScrollTop.value = true;
+  clearTimeout(hideTimer);
+  hideTimer = setTimeout(() => {
+    showScrollTop.value = false;
+  }, 1000);
+}
 
 function onScroll() {
-  showScrollTop.value = scrollEl.scrollTop > 300;
+  if (scrollEl.scrollTop > 300) {
+    showAndScheduleHide();
+  } else {
+    clearTimeout(hideTimer);
+    showScrollTop.value = false;
+  }
+}
+
+function onTouch() {
+  if (scrollEl.scrollTop > 300) showAndScheduleHide();
 }
 
 function scrollToTop() {
@@ -235,10 +253,15 @@ function scrollToTop() {
 onMounted(() => {
   scrollEl = document.querySelector('main');
   scrollEl?.addEventListener('scroll', onScroll);
+  scrollEl?.addEventListener('touchstart', onTouch);
+  scrollEl?.addEventListener('pointerdown', onTouch);
 });
 
 onBeforeUnmount(() => {
+  clearTimeout(hideTimer);
   scrollEl?.removeEventListener('scroll', onScroll);
+  scrollEl?.removeEventListener('touchstart', onTouch);
+  scrollEl?.removeEventListener('pointerdown', onTouch);
 });
 </script>
 
