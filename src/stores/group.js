@@ -218,7 +218,9 @@ export const useGroupStore = defineStore('group', () => {
     }
 
     if (group.isOwner) {
-      throw new Error('그룹의 관리자는 그룹을 나갈 수 없습니다.');
+      // 혼자 남았을 때에는 가능
+      if (group.members.length > 1)
+        throw new Error('그룹의 관리자는 그룹을 나갈 수 없습니다.');
     }
 
     try {
