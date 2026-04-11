@@ -1,4 +1,6 @@
 <script setup>
+import { useGroupStore } from '@/stores/group';
+import { storeToRefs } from 'pinia';
 
 const props = defineProps({
   item: {
@@ -17,6 +19,9 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['edit', 'delete', 'detail']);
+
+const groupStore = useGroupStore();
+const { currentGroup } = storeToRefs(groupStore);
 
 function formatAmount(amount) {
   if (amount > 0) return `+${amount.toLocaleString()}원`;
@@ -44,9 +49,10 @@ function formatAmount(amount) {
     <div class="flex-1 min-w-0">
       <div class="flex items-center gap-1.5">
         <span
-          v-if="item.isOwner"
+          v-if="item.isOwner && currentGroup"
           class="text-xs bg-pink-100 text-pink-500 px-1.5 py-0.5 rounded-full font-medium leading-none shrink-0"
-        >나</span>
+          >나</span
+        >
         <p class="text-sm font-medium truncate" :class="'text-gray-800'">
           {{ item.title }}
         </p>
