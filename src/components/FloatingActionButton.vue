@@ -8,7 +8,7 @@ import { useModalStore } from '@/stores/modal.js';
 import MakeRecordModal from '@/components/MakeRecordModal.vue';
 import { toast } from 'vue-sonner';
 import { copyToClipboard } from '@/utils/clipboard.js';
-import { Plus } from 'lucide-vue-next'
+import { Plus } from 'lucide-vue-next';
 const router = useRouter();
 const route = useRoute();
 const groupStore = useGroupStore();
@@ -174,7 +174,7 @@ const handleDeleteGroup = () => {
         >
           <span class="flex-1 text-center">수입/지출 추가</span>
           <div
-            class="w-8 h-8 rounded-full bg-violet-100 text-violet-600 flex items-center justify-center text-lg shrink-0"
+            class="w-8 h-8 rounded-full bg-[#836BC2]/15 text-[#836BC2] flex items-center justify-center text-lg shrink-0"
           >
             📝
           </div>
@@ -187,7 +187,7 @@ const handleDeleteGroup = () => {
         >
           <span class="flex-1 text-center">모임 추가</span>
           <div
-            class="w-8 h-8 rounded-full bg-violet-100 text-violet-600 flex items-center justify-center text-lg shrink-0"
+            class="w-8 h-8 rounded-full bg-[#836BC2]/15 text-[#836BC2] flex items-center justify-center text-lg shrink-0"
           >
             🤝
           </div>
@@ -209,13 +209,13 @@ const handleDeleteGroup = () => {
 
         <!-- 모임 장일 때: 모임 삭제하기 -->
         <button
-            v-if="currentGroup?.isOwner"
-            @click="handleDeleteGroup"
-            class="w-44 flex items-center justify-between gap-3 px-4 py-2 bg-white rounded-full shadow-lg border border-gray-100 text-sm font-bold text-red-500 hover:bg-red-50 transition"
+          v-if="currentGroup?.isOwner"
+          @click="handleDeleteGroup"
+          class="w-44 flex items-center justify-between gap-3 px-4 py-2 bg-white rounded-full shadow-lg border border-gray-100 text-sm font-bold text-red-500 hover:bg-red-50 transition"
         >
           <span class="flex-1 text-center">모임 삭제하기</span>
           <div
-              class="w-8 h-8 rounded-full bg-red-100 text-red-500 flex items-center justify-center text-lg shrink-0"
+            class="w-8 h-8 rounded-full bg-red-100 text-red-500 flex items-center justify-center text-lg shrink-0"
           >
             👋
           </div>
@@ -240,10 +240,10 @@ const handleDeleteGroup = () => {
     <!-- 메인 + 버튼 -->
     <button
       @click="toggleFab"
-      class="w-14 h-14 rounded-full bg-purple-600 text-white shadow-lg flex items-center justify-center transition-all duration-300 ease-in-out"
+      class="w-14 h-14 rounded-full bg-[#836BC2] text-white shadow-lg flex items-center justify-center transition-all duration-300 ease-in-out"
       :class="{ 'rotate-45 bg-slate-700': isFabOpen }"
     >
-      <Plus class="w-8 h-8"/>
+      <Plus class="w-8 h-8" />
     </button>
   </div>
 </template>

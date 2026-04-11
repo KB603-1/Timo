@@ -27,8 +27,8 @@ const userName = computed(() => user.value?.nickname || '사용자');
       <p class="text-sm font-medium text-gray-500 mb-0.5">
         오늘도 현명한 하루 💸
       </p>
-      <h2 class="text-2xl font-bold text-gray-900 tracking-tight">
-        <span class="text-purple-600">{{ userName }}</span
+      <h2 class="text-2xl font-bold text-[#191919] tracking-tight">
+        <span class="text-[#836BC2]">{{ userName }}</span
         >님, 안녕하세요!
       </h2>
     </div>

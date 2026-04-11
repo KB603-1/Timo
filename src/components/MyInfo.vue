@@ -92,10 +92,10 @@ const spendingType = computed(() => {
       <CarouselItem>
         <div
           v-if="spendingType"
-          class="bg-linear-to-br from-purple-500 to-purple-700 rounded-2xl p-5 flex flex-col gap-3 h-[300px]"
+          class="bg-linear-to-br from-[#836BC2] to-[#836BC2]/80 rounded-2xl p-5 flex flex-col gap-3 h-[300px]"
         >
           <span
-            class="inline-flex items-center gap-1.5 bg-purple-400/40 text-white text-xs font-semibold px-3 py-1 rounded-full self-start"
+            class="inline-flex items-center gap-1.5 bg-[#836BC2] text-white text-xs font-semibold px-3 py-1 rounded-full self-start"
           >
             ✨ 나의 소비 유형
           </span>
@@ -122,7 +122,7 @@ const spendingType = computed(() => {
         </div>
         <div
           v-else
-          class="bg-linear-to-br from-purple-500 to-purple-700 rounded-2xl p-5 flex flex-col items-center justify-center text-center h-[300px]"
+          class="bg-linear-to-br from-[#836BC2] to-[#836BC2]/80 rounded-2xl p-5 flex flex-col items-center justify-center text-center h-[300px]"
         >
           <p class="text-purple-200 text-sm">아직 지출 내역이 없어요</p>
           <p class="text-white font-semibold mt-1">기록을 시작해보세요! 📝</p>

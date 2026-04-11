@@ -106,10 +106,10 @@ const top3CategoryExpense = computed(() => {
       <!-- 슬라이드 3: 멍청 비용 -->
       <CarouselItem>
         <div
-          class="bg-linear-to-br from-purple-500 to-purple-700 rounded-2xl p-5 flex flex-col h-[300px]"
+          class="bg-linear-to-br from-[#836BC2] to-[#836BC2]/80 rounded-2xl p-5 flex flex-col h-[300px]"
         >
           <span
-            class="inline-flex items-center gap-1.5 bg-purple-400/40 text-white text-xs font-semibold px-3 py-1 rounded-full self-start mb-2"
+            class="inline-flex items-center gap-1.5 bg-[#836BC2] text-white text-xs font-semibold px-3 py-1 rounded-full self-start mb-2"
           >
             🐔 멍청 비용
           </span>

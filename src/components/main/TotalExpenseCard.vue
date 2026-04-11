@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router';
 import { useRecordStore } from '@/stores/record';
 import { useGroupStore } from '@/stores/group';
 import { storeToRefs } from 'pinia';
-import { ChevronRight } from 'lucide-vue-next'
+import { ChevronRight } from 'lucide-vue-next';
 import PigIcon from '@/components/PigIcon.vue';
 
 const router = useRouter();
@@ -59,14 +59,14 @@ const lastMonthResult = computed(() => {
     <!-- 좌측: 공통 총 지출 메인 카드 -->
     <div
       @click="router.push('/stats')"
-      class="flex-1 rounded-2xl bg-linear-to-br from-purple-500 to-purple-700 p-5 shadow-lg relative overflow-hidden cursor-pointer flex flex-col justify-center"
+      class="flex-1 rounded-2xl bg-[#836BC2] p-5 shadow-lg relative overflow-hidden cursor-pointer flex flex-col justify-center"
     >
       <!-- 우측 상단/하단 원형 배경 -->
       <div
-        class="absolute -right-6 -top-6 w-32 h-32 rounded-full bg-purple-400/30"
+        class="absolute -right-6 -top-6 w-32 h-32 rounded-full bg-white/20"
       ></div>
       <div
-        class="absolute right-10 bottom-2 w-16 h-16 rounded-full bg-purple-400/20"
+        class="absolute right-10 bottom-2 w-16 h-16 rounded-full bg-white/10"
       ></div>
 
       <!-- 돼지 저금통 & 떨어지는 동전 애니메이션 영역 -->
@@ -121,7 +121,11 @@ const lastMonthResult = computed(() => {
 
         <!-- 돼지 이미지 -->
         <div class="w-full h-full animate-pig-bounce">
-          <PigIcon eye-color="#5b21b6" nose-spot-color="#9333ea" :show-ear-tag="false" />
+          <PigIcon
+            eye-color="#5b21b6"
+            nose-spot-color="#9333ea"
+            :show-ear-tag="false"
+          />
         </div>
       </div>
 
@@ -140,7 +144,7 @@ const lastMonthResult = computed(() => {
         >
       </h1>
       <div
-        class="mt-3 inline-flex items-center gap-1.5 bg-purple-600/50 rounded-full px-3 py-1 text-white text-[11px] self-start relative z-10"
+        class="mt-3 inline-flex items-center gap-1.5 bg-white/20 rounded-full px-3 py-1 text-white text-[11px] self-start relative z-10"
       >
         <span
           v-if="!lastMonthResult.hasData"
@@ -152,7 +156,7 @@ const lastMonthResult = computed(() => {
           class="text-green-300 font-semibold"
           >지난 달 대비 ▼ {{ lastMonthResult.percent }}% 절약</span
         >
-        <span v-else class="text-green-300 font-semibold"
+        <span v-else class="text-red-300 font-semibold"
           >지난 달 대비 ▲ {{ Math.abs(lastMonthResult.percent) }}% 증가</span
         >
       </div>

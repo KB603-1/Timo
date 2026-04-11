@@ -2730,6 +2730,18 @@
       "userId": "user01",
       "groupId": null,
       "id": "cbGguJjO6tE"
+    },
+    {
+      "type": "expense",
+      "categoryId": "cat009",
+      "title": "웱",
+      "amount": 1111111,
+      "date": "2026-04-12T03:44:16",
+      "memo": "",
+      "dumbScore": -2,
+      "userId": "user01",
+      "groupId": "grp08",
+      "id": "NeTEkjIxDFk"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

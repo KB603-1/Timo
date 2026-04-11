@@ -83,7 +83,7 @@ function openDetailModal(item) {
   <div class="mx-5 mt-5">
     <div class="flex items-center justify-between mb-3">
       <h3 class="text-base font-bold text-gray-800">최근 내역</h3>
-      <RouterLink to="/monthly" class="text-xs text-purple-500 font-medium"
+      <RouterLink to="/monthly" class="text-xs text-[#606060] font-medium"
         >전체보기 ›</RouterLink
       >
     </div>

@@ -20,7 +20,7 @@ function isActive(path) {
     <button
       @click="router.push('/')"
       class="flex-1 flex flex-col items-center justify-center gap-1 py-3"
-      :class="isActive('/') ? 'text-violet-600' : 'text-gray-400'"
+      :class="isActive('/') ? 'text-[#836BC2]' : 'text-gray-400'"
     >
       <House />
       <span class="text-xs font-medium">홈</span>
@@ -30,7 +30,7 @@ function isActive(path) {
     <button
       @click="router.push('/monthly')"
       class="flex-1 flex flex-col items-center justify-center gap-1 py-3"
-      :class="isActive('/monthly') ? 'text-violet-600' : 'text-gray-400'"
+      :class="isActive('/monthly') ? 'text-[#836BC2]' : 'text-gray-400'"
     >
       <List />
       <span class="text-xs font-medium">내역</span>
@@ -40,7 +40,7 @@ function isActive(path) {
     <button
       @click="router.push('/stats')"
       class="flex-1 flex flex-col items-center justify-center gap-1 py-3"
-      :class="isActive('/stats') ? 'text-violet-600' : 'text-gray-400'"
+      :class="isActive('/stats') ? 'text-[#836BC2]' : 'text-gray-400'"
     >
       <ChartNoAxesColumn />
       <span class="text-xs font-medium">통계</span>
@@ -49,7 +49,7 @@ function isActive(path) {
     <button
       @click="router.push('/mypage')"
       class="flex-1 flex flex-col items-center justify-center gap-1 py-3"
-      :class="isActive('/mypage') ? 'text-violet-600' : 'text-gray-400'"
+      :class="isActive('/mypage') ? 'text-[#836BC2]' : 'text-gray-400'"
     >
       <UserCog />
       <span class="text-xs font-medium">내 정보</span>

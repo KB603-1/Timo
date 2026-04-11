@@ -40,7 +40,7 @@ const remainingDays = computed(() => {
       <template v-if="budgetGoal > 0">
         <!-- 헤더 -->
         <div class="flex justify-between items-center mb-1">
-          <h3 class="font-bold text-gray-800 text-base">
+          <h3 class="font-bold text-[#191919] text-base">
             🎯 이번 달 예산 현황
           </h3>
           <span
@@ -48,7 +48,7 @@ const remainingDays = computed(() => {
             :class="
               isOverBudget
                 ? 'bg-red-50 text-red-500'
-                : 'bg-purple-50 text-purple-600'
+                : 'bg-[#836BC2]/10 text-[#836BC2]'
             "
           >
             {{ isOverBudget ? '예산 초과' : '순항 중' }}
@@ -70,7 +70,7 @@ const remainingDays = computed(() => {
                 />
                 <!-- 진행률 원 -->
                 <path
-                  :class="isOverBudget ? 'text-red-500' : 'text-purple-500'"
+                  :class="isOverBudget ? 'text-red-500' : 'text-emerald-400'"
                   stroke-dasharray="100, 100"
                   :stroke-dashoffset="100 - budgetUsagePercent"
                   stroke-linecap="round"
@@ -84,7 +84,7 @@ const remainingDays = computed(() => {
               <div
                 class="absolute inset-0 flex flex-col items-center justify-center"
               >
-                <span class="text-2xl font-bold text-gray-800 tracking-tighter"
+                <span class="text-2xl font-bold text-[#191919] tracking-tighter"
                   >{{ Math.round(budgetUsagePercent)
                   }}<span class="text-xs font-semibold text-gray-500 ml-0.5"
                     >%</span
@@ -111,7 +111,7 @@ const remainingDays = computed(() => {
                 </p>
                 <p
                   class="text-sm font-bold"
-                  :class="isOverBudget ? 'text-red-500' : 'text-purple-600'"
+                  :class="isOverBudget ? 'text-red-500' : 'text-[#836BC2]'"
                 >
                   {{ totalExpense.toLocaleString() }}원
                 </p>
@@ -139,7 +139,7 @@ const remainingDays = computed(() => {
           </p>
           <p v-else class="text-xs text-gray-500 font-medium tracking-tight">
             남은 {{ remainingDays }}일 동안 하루
-            <strong class="text-purple-600 text-sm"
+            <strong class="text-[#836BC2] text-sm"
               >{{
                 Math.floor(
                   (budgetGoal - totalExpense) / remainingDays,
@@ -156,11 +156,11 @@ const remainingDays = computed(() => {
         class="flex flex-col items-center justify-center h-full text-center px-4"
       >
         <div
-          class="w-16 h-16 bg-purple-50 rounded-full flex items-center justify-center text-3xl mb-4 shadow-inner"
+          class="w-16 h-16 bg-[#836BC2]/10 rounded-full flex items-center justify-center text-3xl mb-4 shadow-inner"
         >
           🎯
         </div>
-        <h3 class="text-base font-bold text-gray-800 mb-1.5">
+        <h3 class="text-base font-bold text-[#191919] mb-1.5">
           이번 달 예산을 설정해보세요!
         </h3>
         <p class="text-xs text-gray-500 mb-6 leading-relaxed">
@@ -168,7 +168,7 @@ const remainingDays = computed(() => {
         </p>
         <button
           @click="router.push('/mypage')"
-          class="bg-violet-600 text-white text-sm font-semibold py-2.5 px-6 rounded-full shadow-md hover:bg-violet-700 transition active:scale-95"
+          class="bg-[#836BC2] text-white text-sm font-semibold py-2.5 px-6 rounded-full shadow-md hover:bg-[#836BC2]/90 transition active:scale-95"
         >
           예산 설정하러 가기
         </button>

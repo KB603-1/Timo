@@ -19,10 +19,14 @@ const carousel = inject('carousel');
       v-for="(_, i) in carousel.scrollSnaps"
       :key="i"
       @click="carousel.scrollTo(i)"
-      :class="cn(
-        'rounded-full transition-all duration-200',
-        carousel.selectedIndex === i ? 'w-5 h-2 bg-purple-600' : 'w-2 h-2 bg-gray-300'
-      )"
+      :class="
+        cn(
+          'rounded-full transition-all duration-200',
+          carousel.selectedIndex === i
+            ? 'w-5 h-2 bg-[#836BC2]'
+            : 'w-2 h-2 bg-gray-300',
+        )
+      "
     />
   </div>
 </template>

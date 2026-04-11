@@ -277,7 +277,7 @@ onBeforeUnmount(() => {
 
 <template>
   <!-- 타이틀 -->
-  <div class="px-5 pb-4 bg-[#f0f0f8]">
+  <div class="px-5 pb-4 bg-[#F4F5F7]">
     <h1 class="text-3xl font-bold text-gray-900">월간 내역</h1>
   </div>
 
