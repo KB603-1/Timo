@@ -62,7 +62,10 @@ export const useGroupStore = defineStore('group', () => {
     }
     try {
       const res = await api.get(`/groupMembers?userId=${user.id}&_embed=group`);
-      myGroups.value = res.data.map((groupMember) => {
+      myGroups.value = res.data.filter((groupMember => {
+        const group = groupMember.group;
+        return !group.isDeleted;
+      })).map((groupMember) => {
         const group = groupMember.group;
         return {
           id: group.id,
@@ -140,8 +143,10 @@ export const useGroupStore = defineStore('group', () => {
       throw new Error('그룹의 관리자만 그룹을 삭제할 수 있습니다.');
 
     try {
-      const res = await api.delete(
-        `/groups/${groupId}?_dependent=groupMembers&_dependent=records`,
+      await api.patch(
+        `/groups/${groupId}`, {
+            isDeleted: true,
+          }
       );
     } catch (e) {
       throw new Error('오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
