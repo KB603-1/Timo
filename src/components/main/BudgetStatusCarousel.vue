@@ -27,7 +27,7 @@ const isOverBudget = computed(() => props.totalExpense > props.budgetGoal);
 const remainingDays = computed(() => {
   const now = new Date();
   const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-  return Math.max(1, lastDay - now.getDate());
+  return Math.max(1, lastDay - now.getDate() + 1);
 });
 </script>
 
