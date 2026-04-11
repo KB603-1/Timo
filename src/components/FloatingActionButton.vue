@@ -14,6 +14,7 @@ const route = useRoute();
 const groupStore = useGroupStore();
 const { currentGroup } = storeToRefs(groupStore);
 const modalStore = useModalStore();
+const { isOpen: isModalOpen } = storeToRefs(modalStore);
 
 const isFabOpen = ref(false);
 const isCreateSheetOpen = ref(false);
@@ -122,8 +123,9 @@ const handleLeaveGroup = () => {
   />
 
   <div
+    v-if="!isModalOpen"
     ref="fabContainer"
-    class="fixed bottom-24 right-6 flex flex-col items-end gap-3 z-50"
+    class="fixed bottom-[calc(6rem+env(safe-area-inset-bottom))] right-6 flex flex-col items-end gap-3 z-[60]"
   >
     <!-- 서브 버튼 메뉴 (애니메이션 적용) -->
     <transition

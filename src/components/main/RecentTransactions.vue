@@ -19,7 +19,11 @@ function formatDate(dateStr) {
 }
 
 const recentTransactions = computed(() => {
+  const oneWeekAgo = new Date();
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
   return [...expenses.value]
+    .filter((e) => new Date(e.date) >= oneWeekAgo)
     .sort((a, b) => new Date(b.date) - new Date(a.date))
     .slice(0, 3)
     .map((e) => {

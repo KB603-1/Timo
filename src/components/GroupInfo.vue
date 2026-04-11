@@ -37,11 +37,6 @@ const summary = computed(() => {
   return {totalIncome, totalExpense, groupedRecord: grouped};
 });
 
-const top3Expense = computed(() => {
-  return Object.values(summary.value.groupedRecord)
-      .sort((a, b) => b.totalExpense - a.totalExpense)
-      .slice(0, 3);
-});
 
 const top3CategoryExpense = computed(() => {
   const categoryMap = {};
@@ -142,57 +137,6 @@ const top3CategoryExpense = computed(() => {
             <div v-else class="flex items-center justify-center py-4 text-white/70 text-sm">
               데이터가 없습니다
             </div>
-          </div>
-
-        </div>
-      </CarouselItem>
-      <!-- 슬라이드 1: 이달의 지출왕 -->
-      <CarouselItem>
-        <div class="bg-linear-to-br from-purple-500 to-purple-700 rounded-2xl p-5 flex flex-col h-[300px]">
-
-    <span
-        class="inline-flex items-center gap-1.5 bg-purple-400/40 text-white text-xs font-semibold px-3 py-1 rounded-full self-start mb-4">
-      🏆 이달의 지출왕
-    </span>
-
-          <div v-if="top3Expense.length > 0" class="flex flex-col flex-1 justify-between">
-
-            <div v-for="index in 3" :key="index"
-                 :class="[
-       'flex items-center rounded-xl px-4 py-3.5',
-       top3Expense[index - 1]
-         ? index === 1
-           ? 'bg-yellow-400/30'
-           : index === 2
-           ? 'bg-gray-300/30'
-           : 'bg-orange-400/30'
-         : 'bg-white/10 border border-dashed border-white/20'
-     ]"
-            >
-              <template v-if="top3Expense[index - 1]">
-    <span class="text-2xl mr-3">
-      {{ index === 1 ? '👑' : index === 2 ? '🥈' : '🥉' }}
-    </span>
-
-                <span class="flex-1 text-white font-semibold text-base">
-      {{ top3Expense[index - 1].user?.nickname }}
-    </span>
-
-                <span class="bg-purple-700/60 text-white text-sm font-bold px-3 py-1 rounded-lg">
-      {{ top3Expense[index - 1].totalExpense.toLocaleString() }} 원
-    </span>
-              </template>
-
-              <template v-else>
-                <span class="text-white/40 text-sm">데이터 없음</span>
-              </template>
-            </div>
-
-          </div>
-
-          <!-- 데이터 없을 때 -->
-          <div v-else class="flex flex-1 items-center justify-center text-white/70 text-sm">
-            데이터가 없습니다
           </div>
 
         </div>

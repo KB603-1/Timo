@@ -17,7 +17,7 @@ import { useRecordStore } from '@/stores/record';
 import { useGroupStore } from '@/stores/group';
 import { useUserStore } from '@/stores/user';
 import { storeToRefs } from 'pinia';
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, onActivated } from 'vue';
 
 const DEFAULT_COLORS = [
   '#a78bfa',
@@ -40,6 +40,11 @@ const userStore = useUserStore();
 const { user: currentUser } = storeToRefs(userStore);
 
 onMounted(() => {
+  recordStore.fetchRecord();
+  recordStore.fetchCategories();
+});
+
+onActivated(() => {
   recordStore.fetchRecord();
   recordStore.fetchCategories();
 });
@@ -277,7 +282,7 @@ const memberExpenseData = computed(() => {
   <div class="mx-5 mt-4 rounded-2xl bg-white p-4 shadow-sm">
     <h3 class="text-base font-bold text-gray-800 mb-3">월별 소비 추이</h3>
     <ChartContainer :config="barConfig" class="h-36">
-      <VisXYContainer :key="monthlyData.map(d => d.amount).join(',')" :data="monthlyData" :height="144">
+      <VisXYContainer :data="monthlyData" :height="144">
         <VisGroupedBar
           :x="barX"
           :y="barY"
@@ -291,6 +296,7 @@ const memberExpenseData = computed(() => {
           :num-ticks="6"
           :grid-line="false"
           :domain-line="false"
+          :tick-padding="10"
         />
         <ChartCrosshair :template="barTooltip" />
       </VisXYContainer>

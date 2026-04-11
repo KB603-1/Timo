@@ -20,7 +20,7 @@ function isActive(path) {
 
 <template>
   <nav
-    class="flex bg-white border-t border-gray-100 items-center justify-around px-4 py-2 z-50"
+    class="flex bg-white border-t border-gray-100 items-center justify-around px-4 py-2 z-50 pb-[calc(0.5rem+env(safe-area-inset-bottom))]"
   >
     <!-- 홈 -->
     <button
