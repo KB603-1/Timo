@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch, onMounted, onActivated } from 'vue';
+import { computed } from 'vue';
 import { useRecordStore } from '@/stores/record';
 import { useUserStore } from '@/stores/user';
 import { storeToRefs } from 'pinia';
@@ -19,21 +19,8 @@ const daysInMonth = new Date(year, month, 0).getDate();
 const daysLeft = Math.max(daysInMonth - today + 1, 1);
 const monthPrefix = `${year}-${String(month).padStart(2, '0')}`;
 
-function budgetKey() {
-  return `personal_budget_${user.value?.id}_${year}_${String(month).padStart(2, '0')}`;
-}
-
-const budget = ref(0);
-
-function loadBudget() {
-  if (user.value) budget.value = Number(localStorage.getItem(budgetKey())) || 0;
-}
-
-// 최초 로드 + 유저 변경 시
-watch(user, loadBudget, { immediate: true });
-// KeepAlive로 캐시된 페이지에서 돌아올 때마다 재읽기
-onMounted(loadBudget);
-onActivated(loadBudget);
+// 로컬 스토리지 대신 유저 DB 정보에서 목표 예산을 가져옵니다. (없으면 0원)
+const budget = computed(() => user.value?.budgetGoal || 0);
 
 const monthSpent = computed(() =>
   expenses.value
@@ -115,7 +102,9 @@ const info = computed(() => {
     </div>
 
     <div class="flex-1 min-w-0">
-      <p class="text-sm font-semibold text-gray-800 leading-snug">{{ info.main }}</p>
+      <p class="text-sm font-semibold text-gray-800 leading-snug">
+        {{ info.main }}
+      </p>
       <p class="text-xs text-gray-400 mt-0.5 leading-snug">{{ info.sub }}</p>
 
       <div v-if="budget > 0" class="mt-2">
@@ -127,13 +116,24 @@ const info = computed(() => {
           ></div>
         </div>
         <p class="text-[10px] text-gray-400 mt-0.5">
-          {{ monthSpent.toLocaleString() }}원 / {{ budget.toLocaleString() }}원 ({{ percent }}%)
+          {{ monthSpent.toLocaleString() }}원 / {{ budget.toLocaleString() }}원
+          ({{ percent }}%)
         </p>
       </div>
     </div>
 
-    <svg class="w-4 h-4 text-gray-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+    <svg
+      class="w-4 h-4 text-gray-300 shrink-0"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M9 5l7 7-7 7"
+      />
     </svg>
   </div>
 </template>
