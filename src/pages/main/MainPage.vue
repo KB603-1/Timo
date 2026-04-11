@@ -9,7 +9,6 @@ import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import GroupInfo from '@/components/GroupInfo.vue';
 import MyInfo from '@/components/MyInfo.vue';
-import FloatingActionButton from '@/components/FloatingActionButton.vue';
 import GroupDrawer from '@/components/GroupDrawer.vue';
 import TotalExpenseCard from '@/components/main/TotalExpenseCard.vue';
 
@@ -94,6 +93,4 @@ const spendingType = computed(() => {
   <!-- 최근 내역 -->
   <RecentTransactions />
 
-  <!-- 우측 하단 플로팅 액션 버튼 (FAB) -->
-  <FloatingActionButton />
 </template>
