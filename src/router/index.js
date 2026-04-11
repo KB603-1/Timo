@@ -11,6 +11,7 @@ import EditRecord from '@/pages/EditRecord.vue';
 import GroupDetailPage from '@/pages/share/GroupDetailPage.vue';
 import InvitePage from '@/pages/share/InvitePage.vue';
 import MyPage from '@/pages/mypage/MyPage.vue';
+import {useGroupStore} from "@/stores/group.js";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,7 +21,7 @@ const router = createRouter({
       component: LoggedIn,
       children: [
         { path: '', component: MainPage },
-        { path: '/group', name: 'group', component: GroupDetailPage },
+        { path: '/group', name: 'group', component: GroupDetailPage, meta: {requiresGroup: true} },
         { path: '/stats', component: ChartPage },
         { path: '/monthly', component: MonthlyHistory },
         { path: '/edit', component: EditRecord },
@@ -36,6 +37,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore();
+  const groupStore = useGroupStore();
 
   if (!userStore.isLoggedIn) {
     const loginInformation = localStorage.getItem('userId');
@@ -46,6 +48,10 @@ router.beforeEach(async (to, from, next) => {
 
   if (to.meta.requiresAuth && !userStore.isLoggedIn) {
     return next('/login');
+  }
+
+  if (to.meta.requiresGroup && !groupStore.currentGroup) {
+    return next('/');
   }
 
   next();
