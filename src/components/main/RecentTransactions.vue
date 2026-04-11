@@ -44,10 +44,15 @@ const recentTransactions = computed(() => {
   <div class="mx-5 mt-5">
     <div class="flex items-center justify-between mb-3">
       <h3 class="text-base font-bold text-gray-800">최근 내역</h3>
-      <RouterLink to="/monthly" class="text-xs text-purple-500 font-medium">전체보기 ›</RouterLink>
+      <RouterLink to="/monthly" class="text-xs text-purple-500 font-medium"
+        >전체보기 ›</RouterLink
+      >
     </div>
     <div class="flex flex-col gap-2">
-      <p v-if="recentTransactions.length === 0" class="text-center text-sm text-gray-400 py-6">
+      <p
+        v-if="recentTransactions.length === 0"
+        class="text-center text-sm text-gray-400 py-6"
+      >
         데이터가 없습니다
       </p>
       <Card
@@ -57,7 +62,7 @@ const recentTransactions = computed(() => {
       >
         <div
           :class="[
-            'w-10 h-10 rounded-full flex items-center justify-center text-xl flex-shrink-0',
+            'w-10 h-10 rounded-full flex items-center justify-center text-xl shrink-0',
             tx.bg,
           ]"
         >

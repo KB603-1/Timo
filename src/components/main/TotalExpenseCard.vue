@@ -57,7 +57,7 @@ const lastMonthResult = computed(() => {
     <!-- 좌측: 공통 총 지출 메인 카드 -->
     <div
       @click="router.push('/stats')"
-      class="flex-1 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-700 p-5 shadow-lg relative overflow-hidden cursor-pointer flex flex-col justify-center"
+      class="flex-1 rounded-2xl bg-linear-to-br from-purple-500 to-purple-700 p-5 shadow-lg relative overflow-hidden cursor-pointer flex flex-col justify-center"
     >
       <!-- 우측 상단/하단 원형 배경 -->
       <div
