@@ -16,7 +16,7 @@ function onSplashFinish() {
 
 <template>
   <SplashScreen v-if="showSplash" @finish="onSplashFinish" />
-  <div v-else class="h-screen flex flex-col">
+  <div v-else class="h-dvh flex flex-col">
     <RouterView />
     <GlobalModal />
   </div>
