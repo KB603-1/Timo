@@ -1,6 +1,6 @@
 <script setup>
 defineProps({
-  // 'normal' | 'shy' (비밀번호 포커스 시 눈 가린 버전)
+  // 'normal' | 'shy' | 'happy' | 'panic'
   variant: {
     type: String,
     default: 'normal',
@@ -25,24 +25,68 @@ defineProps({
     type: String,
     default: '#7c5cbf',
   },
-})
+});
 </script>
 
 <template>
-  <svg viewBox="0 0 100 112" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+  <svg
+    viewBox="0 0 100 112"
+    width="100%"
+    height="100%"
+    xmlns="http://www.w3.org/2000/svg"
+    style="display: block"
+  >
     <!-- 귀 -->
     <circle cx="24" cy="26" r="18" :fill="bodyColor" />
     <circle cx="76" cy="26" r="18" :fill="bodyColor" />
     <!-- 귀 태그 -->
-    <rect v-if="showEarTag" x="68" y="11" width="16" height="6" rx="3" :fill="earTagColor" />
+    <rect
+      v-if="showEarTag"
+      x="68"
+      y="11"
+      width="16"
+      height="6"
+      rx="3"
+      :fill="earTagColor"
+    />
 
     <!-- 몸 -->
     <circle cx="50" cy="68" r="44" :fill="bodyColor" />
 
-    <!-- 눈 감은 버전 (shy) -->
-    <template v-if="variant === 'shy'">
-      <path d="M31 58 Q37 52 43 58" :stroke="eyeColor" stroke-width="3" stroke-linecap="round" fill="none" />
-      <path d="M57 58 Q63 52 69 58" :stroke="eyeColor" stroke-width="3" stroke-linecap="round" fill="none" />
+    <!-- 눈 감은 버전 (shy) 또는 눈웃음 (happy) -->
+    <template v-if="variant === 'shy' || variant === 'happy'">
+      <path
+        d="M31 58 Q37 52 43 58"
+        :stroke="eyeColor"
+        stroke-width="3"
+        stroke-linecap="round"
+        fill="none"
+      />
+      <path
+        d="M57 58 Q63 52 69 58"
+        :stroke="eyeColor"
+        stroke-width="3"
+        stroke-linecap="round"
+        fill="none"
+      />
+    </template>
+
+    <!-- 당황/오버 예산 (panic) -->
+    <template v-else-if="variant === 'panic'">
+      <path
+        d="M31 53 L43 63 M31 63 L43 53"
+        :stroke="eyeColor"
+        stroke-width="3"
+        stroke-linecap="round"
+        fill="none"
+      />
+      <path
+        d="M57 53 L69 63 M57 63 L69 53"
+        :stroke="eyeColor"
+        stroke-width="3"
+        stroke-linecap="round"
+        fill="none"
+      />
     </template>
 
     <!-- 일반 눈 -->
@@ -57,7 +101,7 @@ defineProps({
     <circle cx="56" cy="77" r="3.5" :fill="noseSpotColor" />
 
     <!-- 다리 -->
-    <rect x="32" y="106" width="16" height="10" rx="5" :fill="bodyColor" />
-    <rect x="52" y="106" width="16" height="10" rx="5" :fill="bodyColor" />
+    <!-- <rect x="32" y="106" width="16" height="10" rx="5" :fill="bodyColor" />
+    <rect x="52" y="106" width="16" height="10" rx="5" :fill="bodyColor" /> -->
   </svg>
 </template>

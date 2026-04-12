@@ -104,24 +104,19 @@ const formattedRecords = computed(() => {
 
 // 총 지출액, 1인당 평균액 계산
 const totalInfo = computed(() => {
-  const expensesOnly = currentMonthRecords.value.filter(
-    (r) => r.type === 'expense',
-  );
-  if (expensesOnly.length === 0) {
-    return { totalAmount: 0, perPersonAmount: 0 };
-  }
+  let totalExpense = 0;
+  let totalIncome = 0;
 
-  // 지출 내역 합산 (DB 스키마에 amount가 있다고 가정)
-  const total = expensesOnly.reduce(
-    (sum, record) => sum + (record.amount || 0),
-    0,
-  );
+  currentMonthRecords.value.forEach((record) => {
+    if (record.type === 'expense') totalExpense += record.amount || 0;
+    if (record.type === 'income') totalIncome += record.amount || 0;
+  });
 
-  // 멤버 수로 나누기 (멤버가 0명이면 0원)
   const memberCount = members.value.length || 1;
-  const perPerson = Math.floor(total / memberCount);
+  const perPersonExpense = Math.floor(totalExpense / memberCount);
+  const perPersonIncome = Math.floor(totalIncome / memberCount);
 
-  return { totalAmount: total, perPersonAmount: perPerson };
+  return { totalExpense, totalIncome, perPersonExpense, perPersonIncome };
 });
 
 // 내가 결제한 총 금액
@@ -228,7 +223,9 @@ const handleSetBudget = async (val) => {
   if (!currentGroup.value) return;
   try {
     await groupStore.updateGroupBudget(currentGroup.value.id, val);
-    toast.success(val > 0 ? '목표 예산이 저장되었습니다.' : '목표 예산이 삭제되었습니다.');
+    toast.success(
+      val > 0 ? '목표 예산이 저장되었습니다.' : '목표 예산이 삭제되었습니다.',
+    );
   } catch (e) {
     toast.error(e.message || '오류가 발생했습니다.');
   }
@@ -250,6 +247,7 @@ watch(currentGroup, (newGroup, oldGroup) => {
       :currentMonth="currentMonth"
       :totalInfo="totalInfo"
       :members="members"
+      :budgetGoal="currentGroup?.budgetGoal || 0"
       v-model:activeTab="activeTab"
       @changeMonth="changeMonth"
       @close="handleClose"

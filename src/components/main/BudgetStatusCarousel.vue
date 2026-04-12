@@ -99,9 +99,7 @@ const remainingDays = computed(() => {
           <div class="flex-1 flex justify-start pl-2">
             <div class="flex flex-col gap-3">
               <div>
-                <p class="text-[10px] font-medium text-gray-400 mb-0.5">
-                  목표 예산
-                </p>
+                <p class="text-[10px] font-medium text-gray-400 mb-0.5">예산</p>
                 <p class="text-sm font-semibold text-gray-700">
                   {{ budgetGoal.toLocaleString() }}원
                 </p>
