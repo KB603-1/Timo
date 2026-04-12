@@ -6,7 +6,7 @@ import { ChevronRight } from 'lucide-vue-next';
 
 const router = useRouter();
 const props = defineProps({
-  totalExpense: {
+  totalIncome: {
     type: Number,
     required: true,
   },
@@ -14,64 +14,49 @@ const props = defineProps({
     type: [Number, Object],
     required: true,
   },
-  memberCount: {
-    type: Number,
-    required: true,
-  },
 });
 
-const spendingLimit = computed(() => {
+const savingGoal = computed(() => {
   if (typeof props.budgetGoal === 'object' && props.budgetGoal !== null) {
-    return props.budgetGoal.spendingLimit || 0;
+    return props.budgetGoal.savingGoal || 0;
   }
-  return props.budgetGoal || 0;
+  return 0;
 });
 
-const spendingPercent = computed(() => {
-  if (spendingLimit.value <= 0) return 0;
+const savingPercent = computed(() => {
+  if (savingGoal.value <= 0) return 0;
   return Math.min(
-    Math.round((props.totalExpense / spendingLimit.value) * 100),
+    Math.round((props.totalIncome / savingGoal.value) * 100),
     100,
   );
 });
 
-const isOverBudget = computed(() => props.totalExpense > spendingLimit.value);
-
-const remainingDays = computed(() => {
-  const now = new Date();
-  const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-  return Math.max(1, lastDay - now.getDate() + 1);
-});
-
-const dailyPerPerson = computed(() => {
-  const remaining = spendingLimit.value - props.totalExpense;
-  if (remaining <= 0) return 0;
-  return Math.floor(remaining / remainingDays.value / props.memberCount);
-});
+const isSavingGoalReached = computed(
+  () => savingGoal.value > 0 && props.totalIncome >= savingGoal.value,
+);
 </script>
 
 <template>
-  <!-- 1. 지출 예산 캐러셀 아이템 -->
   <CarouselItem>
     <div
       class="bg-white rounded-2xl p-5 flex flex-col h-75 shadow-sm border border-gray-100"
     >
-      <!-- 지출 예산이 설정된 경우 -->
-      <template v-if="spendingLimit > 0">
+      <!-- 목표 금액이 설정된 경우 -->
+      <template v-if="savingGoal > 0">
         <!-- 헤더 -->
         <div class="flex justify-between items-center mb-1">
           <h3 class="font-bold text-[#5e5e5e] text-base">
-            이번 달 그룹 지출 예산
+            이번 달 그룹 목표 금액
           </h3>
           <span
             class="text-[10px] font-bold px-2 py-1 rounded-md"
             :class="
-              isOverBudget
-                ? 'bg-red-50 text-red-500'
-                : 'bg-[#836BC2]/10 text-[#836BC2]'
+              isSavingGoalReached
+                ? 'bg-blue-50 text-blue-500'
+                : 'bg-emerald-50 text-emerald-500'
             "
           >
-            {{ isOverBudget ? '예산 초과' : '순항 중' }}
+            {{ isSavingGoalReached ? '목표 달성' : '모으는 중' }}
           </span>
         </div>
 
@@ -88,9 +73,11 @@ const dailyPerPerson = computed(() => {
                   d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                 />
                 <path
-                  :class="isOverBudget ? 'text-red-500' : 'text-[#836BC2]'"
+                  :class="
+                    isSavingGoalReached ? 'text-blue-500' : 'text-emerald-400'
+                  "
                   stroke-dasharray="100, 100"
-                  :stroke-dashoffset="100 - spendingPercent"
+                  :stroke-dashoffset="100 - savingPercent"
                   stroke-linecap="round"
                   stroke-width="3"
                   stroke="currentColor"
@@ -103,7 +90,7 @@ const dailyPerPerson = computed(() => {
                 class="absolute inset-0 flex flex-col items-center justify-center"
               >
                 <span class="text-2xl font-bold text-[#191919] tracking-tighter"
-                  >{{ spendingPercent
+                  >{{ savingPercent
                   }}<span class="text-xs font-semibold text-gray-500 ml-0.5"
                     >%</span
                   ></span
@@ -117,31 +104,31 @@ const dailyPerPerson = computed(() => {
             <div class="flex flex-col gap-3">
               <div>
                 <p class="text-[10px] font-medium text-gray-400 mb-0.5">
-                  지출 한도
+                  목표 금액
                 </p>
                 <p class="text-sm font-semibold text-gray-700">
-                  {{ spendingLimit.toLocaleString() }}원
+                  {{ savingGoal.toLocaleString() }}원
                 </p>
               </div>
               <div>
                 <p class="text-[10px] font-medium text-gray-400 mb-0.5">
-                  현재 지출
+                  현재 모은 금액
                 </p>
                 <p
                   class="text-sm font-bold"
-                  :class="isOverBudget ? 'text-red-500' : 'text-[#836BC2]'"
+                  :class="
+                    isSavingGoalReached ? 'text-blue-500' : 'text-emerald-500'
+                  "
                 >
-                  {{ totalExpense.toLocaleString() }}원
+                  {{ totalIncome.toLocaleString() }}원
                 </p>
               </div>
               <div>
                 <p class="text-[10px] font-medium text-gray-400 mb-0.5">
-                  남은 예산
+                  남은 목표
                 </p>
                 <p class="text-sm font-semibold text-gray-700">
-                  {{
-                    Math.max(0, spendingLimit - totalExpense).toLocaleString()
-                  }}원
+                  {{ Math.max(0, savingGoal - totalIncome).toLocaleString() }}원
                 </p>
               </div>
             </div>
@@ -152,20 +139,22 @@ const dailyPerPerson = computed(() => {
         <div
           class="mt-auto bg-gray-50 rounded-xl p-3 text-center border border-gray-100"
         >
-          <p v-if="isOverBudget" class="text-xs text-red-500 font-bold">
-            앗, 지출 예산을 초과했어요! 🚨
+          <p v-if="isSavingGoalReached" class="text-xs text-blue-500 font-bold">
+            목표 금액을 달성했어요! 🎉
           </p>
           <p v-else class="text-xs text-gray-500 font-medium tracking-tight">
-            남은 {{ remainingDays }}일 동안 1인당 하루
-            <strong class="text-[#836BC2] text-sm"
-              >{{ dailyPerPerson.toLocaleString() }}원</strong
+            앞으로
+            <strong class="text-emerald-500 text-sm"
+              >{{
+                Math.max(0, savingGoal - totalIncome).toLocaleString()
+              }}원</strong
             >
-            가능
+            더 모으면 달성!
           </p>
         </div>
       </template>
 
-      <!-- 지출 예산 미설정 상태 -->
+      <!-- 목표 금액 미설정 상태 -->
       <div
         v-else
         class="flex flex-col items-center justify-center h-full text-center px-4"
@@ -317,16 +306,16 @@ const dailyPerPerson = computed(() => {
           </svg>
         </div>
         <h3 class="text-base font-bold text-[#191919] mb-1">
-          그룹 예산을 설정해보세요!
+          그룹 목표 금액을 설정해보세요!
         </h3>
         <p class="text-xs text-gray-500 mb-3 leading-relaxed">
-          그룹 예산을 설정하면<br />1인당 하루 권장 지출액을 알려드려요.
+          목표 금액을 설정하고<br />그룹원들과 함께 달성해봐요.
         </p>
         <button
           @click="router.push('/group')"
           class="flex items-center justify-center gap-1.5 bg-[#836BC2]/10 text-[#836BC2] text-sm font-bold py-2.5 px-5 rounded-2xl hover:bg-[#836BC2]/20 transition active:scale-95"
         >
-          예산 설정하러 가기
+          목표 설정하러 가기
           <ChevronRight class="w-5 h-5 text-[#836BC2]" />
         </button>
       </div>

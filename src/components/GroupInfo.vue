@@ -10,6 +10,7 @@ import { useRecordStore } from '@/stores/record.js';
 import { useGroupStore } from '@/stores/group.js';
 import { storeToRefs } from 'pinia';
 import GroupBudgetStatusCarousel from './main/GroupBudgetStatusCarousel.vue';
+import GroupSavingStatusCarousel from './main/GroupSavingStatusCarousel.vue';
 
 const recordStore = useRecordStore();
 const groupStore = useGroupStore();
@@ -109,11 +110,15 @@ const top3CategoryExpense = computed(() => {
       <!-- 슬라이드 1: 그룹 예산 현황 -->
       <GroupBudgetStatusCarousel
         :totalExpense="summary.totalExpense"
-        :totalIncome="summary.totalIncome"
         :budgetGoal="currentGroup?.budgetGoal || 0"
         :memberCount="currentGroup?.members?.length || 1"
       />
-      <!-- 슬라이드 2: 멍청 비용 -->
+      <!-- 슬라이드 2: 그룹 목표 금액 -->
+      <GroupSavingStatusCarousel
+        :totalIncome="summary.totalIncome"
+        :budgetGoal="currentGroup?.budgetGoal || 0"
+      />
+      <!-- 슬라이드 3: 멍청 비용 -->
       <CarouselItem>
         <div
           class="bg-white rounded-2xl p-5 flex flex-col h-75 shadow-sm border border-gray-100"
