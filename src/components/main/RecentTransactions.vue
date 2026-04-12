@@ -92,36 +92,36 @@ function openDetailModal(item) {
     </div>
 
     <!-- 수입/지출 토글 -->
-    <div class="flex p-1 bg-slate-100 rounded-xl mb-3">
+    <div class="flex p-1 bg-gray-200/60 rounded-xl mb-4">
       <button
         @click="activeType = 'all'"
-        class="flex-1 py-2.5 text-sm font-medium rounded-lg transition"
+        class="flex-1 py-2 text-sm rounded-lg transition-all duration-200"
         :class="
           activeType === 'all'
-            ? 'bg-white text-slate-900 shadow-sm'
-            : 'text-slate-500 hover:text-slate-700'
+            ? 'bg-white text-[#191919] shadow-sm font-bold'
+            : 'text-gray-500 hover:text-gray-700 font-medium'
         "
       >
         전체
       </button>
       <button
         @click="activeType = 'expense'"
-        class="flex-1 py-2.5 text-sm font-medium rounded-lg transition"
+        class="flex-1 py-2 text-sm rounded-lg transition-all duration-200"
         :class="
           activeType === 'expense'
-            ? 'bg-white text-slate-900 shadow-sm'
-            : 'text-slate-500 hover:text-slate-700'
+            ? 'bg-white text-[#191919] shadow-sm font-bold'
+            : 'text-gray-500 hover:text-gray-700 font-medium'
         "
       >
         지출
       </button>
       <button
         @click="activeType = 'income'"
-        class="flex-1 py-2.5 text-sm font-medium rounded-lg transition"
+        class="flex-1 py-2 text-sm rounded-lg transition-all duration-200"
         :class="
           activeType === 'income'
-            ? 'bg-white text-slate-900 shadow-sm'
-            : 'text-slate-500 hover:text-slate-700'
+            ? 'bg-white text-[#191919] shadow-sm font-bold'
+            : 'text-gray-500 hover:text-gray-700 font-medium'
         "
       >
         수입
