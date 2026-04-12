@@ -62,6 +62,7 @@ const groupedRecentTransactions = computed(() => {
       amount: (e.type === 'income' ? 1 : -1) * e.amount,
       isOwner: user.value && e.userId === user.value.id,
       payerName: e.user?.nickname,
+      date: e.date,
     });
   });
 
