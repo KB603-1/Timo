@@ -64,6 +64,7 @@ const groupedRecentTransactions = computed(() => {
       isOwner: user.value && e.userId === user.value.id,
       payerName: e.user?.nickname,
       date: e.date,
+      memo: e.memo,
     });
   });
 
