@@ -37,7 +37,7 @@ const transactions = computed(() => {
       icon: record.category.icon,
       amount: (record.type === 'income' ? 1 : -1) * record.amount,
       isOwner: record.userId === user.id,
-      payerName: user?.nickname || '나',
+      payerName: record.user?.nickname || '나',
       memo: record.memo,
     };
   });
