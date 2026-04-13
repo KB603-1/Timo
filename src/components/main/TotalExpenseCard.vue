@@ -37,7 +37,13 @@ const monthExpense = computed(() =>
     .reduce((acc, r) => acc + r.amount, 0),
 );
 
-const remainingAmount = computed(() => monthIncome.value - monthExpense.value);
+// 누적된 모든 기록을 바탕으로 실제 총 잔액(남은 금액)을 계산합니다.
+const remainingAmount = computed(() => {
+  if (!records.value) return 0;
+  return records.value.reduce((acc, r) => {
+    return acc + (r.type === 'income' ? r.amount : -r.amount);
+  }, 0);
+});
 
 const perPersonExpense = computed(() => {
   if (!currentGroup.value) return 0;
@@ -132,7 +138,7 @@ const pigVariant = computed(() => {
       </div>
 
       <p class="text-purple-200 text-sm relative z-10 font-medium">
-        이번 달 남은 금액
+        총 남은 금액
       </p>
       <h1
         class="text-white font-bold mt-1 relative z-10 truncate"
@@ -153,7 +159,9 @@ const pigVariant = computed(() => {
           <span
             class="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_4px_rgba(52,211,153,0.5)]"
           ></span>
-          <span class="text-[10px] font-medium text-white/80">수입</span>
+          <span class="text-[10px] font-medium text-white/80"
+            >이번 달 수입</span
+          >
           <span class="text-xs font-bold text-white ml-1"
             >{{ monthIncome.toLocaleString() }}원</span
           >
@@ -164,7 +172,9 @@ const pigVariant = computed(() => {
           <span
             class="w-1.5 h-1.5 rounded-full bg-rose-400 shadow-[0_0_4px_rgba(251,113,133,0.5)]"
           ></span>
-          <span class="text-[10px] font-medium text-white/80">지출</span>
+          <span class="text-[10px] font-medium text-white/80"
+            >이번 달 지출</span
+          >
           <span class="text-xs font-bold text-white ml-1"
             >{{ monthExpense.toLocaleString() }}원</span
           >
