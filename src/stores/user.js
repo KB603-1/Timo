@@ -47,10 +47,9 @@ export const useUserStore = defineStore('user', () => {
     기존 회원가입 계정 비교용
     TODO: hash만 비교
      */
-    const isPlain = user.password === loginData.password;
     const isHashed = user.password.startsWith('$2') && await bcrypt.compare(loginData.password, user.password);
 
-    if (!isPlain && !isHashed) {
+    if (!isHashed) {
       throw new Error('잘못된 아이디 혹은 비밀번호 입니다.');
     }
     localStorage.setItem('userId', user.id);
